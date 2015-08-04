@@ -1,6 +1,6 @@
 
 
-enum TileTypes = {"water", "grass", "marsh", "woodland", "sand", "wall_ns", "wall_ew"};
+enum TileTypes {water, grass, marsh, woodland, sand, wall_ns, wall_ew};
 
 struct Tile
 {
