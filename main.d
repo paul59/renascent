@@ -55,18 +55,3 @@ int main()
 		
 	});	  
 }
-
-
-
-
-
-
-
-
-
-
-
-void prepareAllegro()
-{
-	
-}
