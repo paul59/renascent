@@ -17,7 +17,7 @@ import allegro5.allegro_ttf;
 import allegro5.allegro_color;
 
 import std.stdio : writeln;
-import game;
+import game : runGame;
 
 
 //global allegro variables
@@ -32,10 +32,9 @@ int main()
 
 	return al_run_allegro(
 	{
-		
 		//set up allegro
 		al_init();
-		display = al_create_display(600, 600);
+		display = al_create_display(800, 600);
 		queue = al_create_event_queue();
 		al_install_keyboard();
 		al_install_mouse();
@@ -47,7 +46,7 @@ int main()
 		al_register_event_source(queue, al_get_keyboard_event_source());
 		al_register_event_source(queue, al_get_mouse_event_source());			
 
-		debug writeln("Allegro initialised");
+		debug writeln("... allegro initialised");
 		
 		runGame();
 
