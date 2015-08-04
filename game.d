@@ -10,12 +10,12 @@ import main : queue;
 
 void runGame()
 {
-	debug writeln("... main menu");
+    debug writeln("... main menu");
 
-	//stay in menu until new game, load, quit
+    //stay in menu until new game, load, quit
 	
-	//for now just play new
-	newGame();
+    //for now just play new
+    newGame();
 }
 
 
@@ -24,21 +24,20 @@ void runGame()
  * initialise and play a new game
  * 
  **/
- void newGame()
+void newGame()
 {
-	bool flagPlaying = true;
-	ALLEGRO_KEYBOARD_STATE *state;
+    bool flagPlaying = true;
+    ALLEGRO_KEYBOARD_STATE *state;
 	
-	//init game
-	//initGame()
+    //init game
+    //initGame()
 	
-	//play until quit
-	debug writeln("... entering main loop");
-	while(flagPlaying)
-	{		
-		if(keyDown(ALLEGRO_KEY_ESCAPE)) flagPlaying = false;
-	}
-	
+    //play until quit
+    debug writeln("... entering main loop");
+    while(flagPlaying)
+    {		
+        if(keyDown(ALLEGRO_KEY_ESCAPE)) flagPlaying = false;
+    }
 }
 
 
@@ -51,16 +50,16 @@ void runGame()
  **/
 bool keyDown(int testKey)
 {
-	bool retVal = false;
-	ALLEGRO_EVENT event;
+    bool retVal = false;
+    ALLEGRO_EVENT event;
 	
-	while(al_get_next_event(queue, &event))
-	{
-		if(event.type == ALLEGRO_EVENT_KEY_DOWN)
-		{
-			if(event.keyboard.keycode == testKey) retVal = true;
-		}		
-	}	
+    while(al_get_next_event(queue, &event))
+    {
+        if(event.type == ALLEGRO_EVENT_KEY_DOWN)
+        {
+            if(event.keyboard.keycode == testKey) retVal = true;
+        }		
+    }	
 	
-	return(retVal);
+    return(retVal);
 }

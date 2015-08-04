@@ -30,27 +30,27 @@ ALLEGRO_EVENT_QUEUE* queue;
 int main()
 {
 
-	return al_run_allegro(
-	{
+    return al_run_allegro(
+    {
 		//set up allegro
-		al_init();
-		display = al_create_display(800, 600);
-		queue = al_create_event_queue();
-		al_install_keyboard();
-		al_install_mouse();
-		al_init_image_addon();
-		al_init_font_addon();
-		al_init_ttf_addon();
-		al_init_primitives_addon();
-		al_register_event_source(queue, al_get_display_event_source(display));
-		al_register_event_source(queue, al_get_keyboard_event_source());
-		al_register_event_source(queue, al_get_mouse_event_source());			
+        al_init();
+        display = al_create_display(800, 600);
+        queue = al_create_event_queue();
+        al_install_keyboard();
+        al_install_mouse();
+        al_init_image_addon();
+        al_init_font_addon();
+        al_init_ttf_addon();
+        al_init_primitives_addon();
+        al_register_event_source(queue, al_get_display_event_source(display));
+        al_register_event_source(queue, al_get_keyboard_event_source());
+        al_register_event_source(queue, al_get_mouse_event_source());			
 
-		debug writeln("... allegro initialised");
+        debug writeln("... allegro initialised");
 		
-		runGame();
+        runGame();
 
-		return 0;
+        return 0;
 		
-	});	  
+    });	  
 }
