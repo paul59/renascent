@@ -1,9 +1,27 @@
-
+// D imports
 import std.stdio : writeln;
 
+// allegro imports
 import allegro5.allegro;
 
-import main : queue;
+// app imports
+import  main :
+        queue,
+        imgTileSet,
+        imgPlayer,
+        TileSize,
+        MapSize,
+        playerX,
+        playerY;
+
+import  world :
+		generateMap;
+
+import  render :
+		renderMap,
+		renderPlayer;
+
+import	input;
 
 
 
@@ -12,9 +30,8 @@ void runGame()
 {
     debug writeln("... main menu");
 
-    //stay in menu until new game, load, quit
-	
-    //for now just play new
+    // stay in menu until new game, load, quit
+    // for now just play new
     newGame();
 }
 
@@ -22,44 +39,57 @@ void runGame()
 
 /**
  * initialise and play a new game
- * 
+ *
  **/
 void newGame()
 {
     bool flagPlaying = true;
     ALLEGRO_KEYBOARD_STATE *state;
-	
-    //init game
-    //initGame()
-	
-    //play until quit
+
+    // init game
+    loadResources();
+    generateMap();
+    playerX = 50;
+    playerY = 50;
+    // generateNPCs();
+    // generatePlayer();
+
+
+    // play until quit
     debug writeln("... entering main loop");
     while(flagPlaying)
-    {		
-        if(keyDown(ALLEGRO_KEY_ESCAPE)) flagPlaying = false;
+    {
+
+        //update the assoc array with key states
+        updateKeys();
+
+        if(keyList["esc"]) flagPlaying = false;
+        if(keyList["up"])
+        {
+			playerY > 0 ?  --playerY : playerY = MapSize - 1;
+			keyList["up"] = false;
+		}
+
+
+		renderMap();
+		renderPlayer();
+        al_flip_display();
     }
 }
 
 
 
-/**
- * check if the specified key is pressed
- * it would be better to read all the events from the queue frequently and stuff
- * keyboard events into an array so we can handle multiple keys
- * 
- **/
-bool keyDown(int testKey)
+
+
+
+
+
+void loadResources()
 {
-    bool retVal = false;
-    ALLEGRO_EVENT event;
-	
-    while(al_get_next_event(queue, &event))
-    {
-        if(event.type == ALLEGRO_EVENT_KEY_DOWN)
-        {
-            if(event.keyboard.keycode == testKey) retVal = true;
-        }		
-    }	
-	
-    return(retVal);
+
+    debug writeln("... loading resources");
+    imgTileSet = al_load_bitmap("./resources/tileset.png");
+    imgPlayer = al_load_bitmap("./resources/player.png");
+
+
 }
