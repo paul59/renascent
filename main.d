@@ -22,16 +22,18 @@ import allegro5.allegro_color;
 
 // app imports
 import game : runGame;
+import tiles;
 
 
 // allegro global variables
 ALLEGRO_DISPLAY* display;
 ALLEGRO_EVENT_QUEUE* queue;
+ALLEGRO_FONT* messageFont;
 
 
 // app global variables
 ALLEGRO_BITMAP* imgTileSet, imgPlayer;
-int[MapSize][MapSize] worldMap;
+Tile[MapSize][MapSize] worldMap;
 int playerX, playerY;
 bool[string] keyList;
 
@@ -63,12 +65,12 @@ int main()
 
         debug writeln("... allegro initialised");
 
-		//init the keyboard AA
-		keyList["esc"] = false;
-		keyList["up"] = false;
-		keyList["down"] = false;
-		keyList["left"] = false;
-		keyList["right"] = false;
+        //init the keyboard AA
+        keyList["esc"] = false;
+        keyList["up"] = false;
+        keyList["down"] = false;
+        keyList["left"] = false;
+        keyList["right"] = false;
 
 
 

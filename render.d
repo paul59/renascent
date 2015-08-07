@@ -1,5 +1,9 @@
 
 
+// D imports
+import std.conv;
+import std.string;
+
 
 // allegro imports
 import allegro5.allegro;
@@ -17,7 +21,8 @@ import main :   MapSize,
                 TileSize,
                 playerX,
                 playerY,
-                display;
+                display,
+                messageFont;
 
 
 
@@ -45,7 +50,7 @@ void renderMap()
             if(cellX < 0) cellX += MapSize;
             if(cellX == MapSize) cellX = 0;
 
-            int tileIndex = worldMap[cellY][cellX];
+            int tileIndex = worldMap[cellY][cellX].bitmapIndex;
             al_draw_bitmap_region(imgTileSet, tileIndex * TileSize, 0, TileSize, TileSize, x * TileSize, y * TileSize, 0);
             ++cellX;
 
@@ -62,4 +67,10 @@ void renderPlayer()
 
     al_draw_bitmap(imgPlayer, 10 * TileSize, 10 * TileSize, 0);
 
+}
+
+void renderHUD()
+{
+	
+	al_draw_text(messageFont, al_map_rgb(255,255,255), 600, 0, ALLEGRO_ALIGN_CENTRE, "HUD");
 }

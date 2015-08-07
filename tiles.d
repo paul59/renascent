@@ -1,11 +1,11 @@
 
 
-enum TileTypes {water, grass, marsh, woodland, sand, wall_ns, wall_ew};
+enum TileType {water, grass, rock};
 
 struct Tile
 {
 
-    TileTypes tileType;     // could add functions to change the type based on time
+    int tileType;     		// could add functions to change the type based on time
                             // so grass near water could become marsh in winter
                             // water could become ice etc
 
