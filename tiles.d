@@ -1,6 +1,6 @@
 
 
-enum TileType {water, grass, rock};
+enum TileType {water, grass, rock, tree};
 
 struct Tile
 {

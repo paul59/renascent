@@ -28,13 +28,14 @@ void generateMap()
     }
     
     // add water
-    addSeeds(20, TileType.water);
+    addSeeds(10, TileType.water);
     createClumps(TileType.water, 0, 10);
     
-    addSeeds(20, TileType.rock);
+    addSeeds(15, TileType.rock);
     createClumps(TileType.rock, 2, 4);    
 
-
+    addSeeds(50, TileType.tree);
+    createClumps(TileType.tree, 3, 3);  
 }
 
 
