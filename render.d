@@ -31,15 +31,17 @@ void renderMap()
     // draw to buffer
     al_set_target_bitmap(al_get_backbuffer(display));
 
+    // wrap if necessary
+    if(cellY < 0) cellY += MapSize;
+
     foreach(y; 0..21)
     {
-        // wrap
-        if(cellY < 0) cellY += MapSize;
+        // wrap?
         if(cellY == MapSize) cellY = 0;
 
         foreach(x; 0..21)
         {
-            // wrap
+            // wrap - can move some of this out of loop
             if(cellX < 0) cellX += MapSize;
             if(cellX == MapSize) cellX = 0;
 

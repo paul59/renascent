@@ -44,7 +44,6 @@ void runGame()
 void newGame()
 {
     bool flagPlaying = true;
-    ALLEGRO_KEYBOARD_STATE *state;
 
     // init game
     loadResources();
@@ -64,10 +63,55 @@ void newGame()
         updateKeys();
 
         if(keyList["esc"]) flagPlaying = false;
+
         if(keyList["up"])
         {
-			playerY > 0 ?  --playerY : playerY = MapSize - 1;
+			if(playerY > 0)
+			{
+				--playerY;
+			} else
+			{
+				playerY = MapSize - 1;
+			}
+
 			keyList["up"] = false;
+		}
+
+        if(keyList["down"])
+        {
+			if(playerY < MapSize-1)
+			{
+				++playerY;
+			} else
+			{
+				playerY = 0;
+			}
+			keyList["down"] = false;
+		}
+
+        if(keyList["left"])
+        {
+			if(playerX > 0)
+			{
+				--playerX;
+			} else
+			{
+				playerX = MapSize - 1;
+			}
+
+			keyList["left"] = false;
+		}
+
+        if(keyList["right"])
+        {
+			if(playerX < MapSize-1)
+			{
+				++playerX;
+			} else
+			{
+				playerX = 0;
+			}
+			keyList["right"] = false;
 		}
 
 

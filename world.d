@@ -1,7 +1,9 @@
 
+
 // D imports
 import std.stdio : writeln;
 import std.random : uniform;
+
 
 // app imports
 import main :   MapSize,

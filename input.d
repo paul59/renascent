@@ -15,6 +15,9 @@ void updateKeys()
     // get next event from queue
     while(al_get_next_event(queue, &event))
     {
+
+        // could combine these switch atemants into one piece of code e.g., if keydownevent set flag true
+        // if keyupevent set flag false then use keyList["..."] = flag;
         // keydown event?
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
@@ -28,6 +31,12 @@ void updateKeys()
                 break;
                 case ALLEGRO_KEY_DOWN:
                 keyList["down"] = true;
+                break;
+                case ALLEGRO_KEY_LEFT:
+                keyList["left"] = true;
+                break;
+                case ALLEGRO_KEY_RIGHT:
+                keyList["right"] = true;
                 break;
                 default:
 
@@ -43,6 +52,12 @@ void updateKeys()
                 break;
                 case ALLEGRO_KEY_DOWN:
                 keyList["down"] = false;
+                break;
+                case ALLEGRO_KEY_LEFT:
+                keyList["left"] = false;
+                break;
+                case ALLEGRO_KEY_RIGHT:
+                keyList["right"] = false;
                 break;
                 default:
 
