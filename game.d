@@ -15,6 +15,7 @@ import  main :
         imgPlayer,
         TileSize,
         MapSize,
+        TileType,
         MessageBuffer,
         player,
         worldMap;
@@ -27,6 +28,8 @@ import  render;
 import  input;
 
 import  entity;
+
+import  tiles;
 
 
 
@@ -72,16 +75,17 @@ void newGame()
     player.att = 5;
     player.def = 5;   
     // generateNPCs();
-    // generatePlayer();
 
 
-    // play until quit
-    debug writeln("... entering main loop");
-    
+   
     addMessage("Renascent...");
     addMessage("Arrows: Move");
     addMessage("NumPad Arrows: Face");
     addMessage("NumPad 0: Action");
+    addMessage("Try actions to your *north* only");
+    
+    // play until quit
+    debug writeln("... entering main loop");    
     while(flagPlaying)
     {
 
@@ -92,7 +96,31 @@ void newGame()
         
         if(keyList["action"])
         {
-            addMessage("some action attempted");
+            
+            switch(player.facing)
+            {
+                case Direction.north :
+                if(worldMap[coordNorth(player.locY)][player.locX].tileType == TileType.tree)
+                {
+                    addMessage("Chop!");
+                    worldMap[coordNorth(player.locY)][player.locX] = Tile(TileType.grass, 1, true);
+                }
+                if(worldMap[coordNorth(player.locY)][player.locX].tileType == TileType.water)
+                {
+                    addMessage("Gulp, slurp... you feel refreshed");
+                }
+                if(worldMap[coordNorth(player.locY)][player.locX].tileType == TileType.rock)
+                {
+                    addMessage("Smasho. You got rocks");
+                    worldMap[coordNorth(player.locY)][player.locX] = Tile(TileType.grass, 1, true);
+                }                
+                break;
+                
+                default:
+                addMessage("Undefined action attempted. LOL");
+            }
+            
+            
             keyList["action"] = false;
         }
 
@@ -100,14 +128,7 @@ void newGame()
         {        
             if(canGoNorth())
             {
-                if(player.locY > 0)
-                {
-                    --player.locY;
-                } else
-                {
-                    player.locY = MapSize - 1;
-                }
-                //player.facing = Direction.north;
+                player.locY = coordNorth(player.locY);            
             }
             keyList["up"] = false;
         }
@@ -116,14 +137,7 @@ void newGame()
         {
             if(canGoSouth())
             {            
-                if(player.locY < MapSize-1)
-                {
-                    ++player.locY;
-                } else
-                {
-                    player.locY = 0;
-                }
-                //player.facing = Direction.south;
+                player.locY = coordSouth(player.locY);  
             }
             keyList["down"] = false;
         }
@@ -132,14 +146,7 @@ void newGame()
         {
             if(canGoWest())
             {
-                if(player.locX > 0)
-                {
-                    --player.locX;
-                } else
-                {
-                    player.locX = MapSize - 1;
-                }
-                //player.facing = Direction.west;
+                player.locX = coordWest(player.locX);              
             }
             keyList["left"] = false;
         }
@@ -148,14 +155,8 @@ void newGame()
         {
             if(canGoEast())
             {
-                if(player.locX < MapSize-1)
-                {
-                    ++player.locX;
-                } else
-                {
-                    player.locX = 0;
-                }
-                //player.facing = Direction.east;
+                player.locX = coordEast(player.locX);
+                
             }
             keyList["right"] = false;
         }
@@ -165,56 +166,96 @@ void newGame()
         renderPlayer();
         renderHUD();
         renderMessages();
-        
         al_flip_display();
     }
 }
 
 
 
-bool canGoNorth()
+// these functions return the co-ordinate to the NESW, with wrap if necessary
+
+int coordWest(int cX)
 {
-    int testY = player.locY - 1;
-    if(testY == -1) testY = MapSize - 1;
-    if(worldMap[testY][player.locX].canPass) return true;
-    
-    return false;
+    if(cX == 0) 
+    {
+        return(MapSize - 1);
+    } else
+    {
+        return(cX - 1);
+    }
+}
+
+int coordEast(int cX)
+{
+    if(cX == MapSize - 1) 
+    {
+        return(0);
+    } else
+    {
+        return(cX + 1);
+    }
+}
+
+int coordNorth(int cY)
+{
+    if(cY == 0) 
+    {
+        return(MapSize - 1);
+    } else
+    {
+        return(cY - 1);
+    }
+}
+
+int coordSouth(int cY)
+{
+    if(cY == MapSize - 1) 
+    {
+        return(0);
+    } else
+    {
+        return(cY + 1);
+    }
 }
 
 
+
+// these function test if cell in given direction is passable
+bool canGoNorth()
+{
+    int testY = coordNorth(player.locY);       
+    if(worldMap[testY][player.locX].canPass) return true;
+    return false;
+}
+
 bool canGoSouth()
 {
-    int testY = player.locY + 1;
-    if(testY == MapSize) testY = 0;
-    if(worldMap[testY][player.locX].canPass) return true;
-    
+    int testY = coordSouth(player.locY);
+    if(worldMap[testY][player.locX].canPass) return true;    
     return false;
 }
 
 bool canGoWest()
 {
-    int testX = player.locX - 1;
-    if(testX == -1) testX = MapSize - 1;
+    int testX = coordWest(player.locX);
     if(worldMap[player.locY][testX].canPass) return true;
-    
     return false;
 }
-
 
 bool canGoEast()
 {
-    int testX = player.locX + 1;
-    if(testX == MapSize) testX = 0;
+    int testX = coordEast(player.locX);
     if(worldMap[player.locY][testX].canPass) return true;
-    
     return false;
 }
+
+
+
 
 
 
 bool loadResources()
 {
-
     debug writeln("... loading resources");
     
     imgTileSet = al_load_bitmap("./resources/tileset.png");

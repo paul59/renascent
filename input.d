@@ -74,11 +74,14 @@ void updateKeys()
             }
         }
         
+        /* no need for these as we will set to false them when acted upon
         // keyup event for movement keys - set key to false in AA
         if(event.type == ALLEGRO_EVENT_KEY_UP)
         {
             switch(event.keyboard.keycode)
             {
+                
+                // direction keys released
                 case ALLEGRO_KEY_UP:
                 keyList["up"] = false;
                 break;
@@ -95,6 +98,7 @@ void updateKeys()
 
             }
         }
+        */
 
     }
 
