@@ -7,6 +7,7 @@ import std.random : uniform;
 
 // app imports
 import main :   MapSize,
+                TileType,
                 worldMap;
                 
 import tiles;                
@@ -15,7 +16,7 @@ import tiles;
 void generateMap()
 {
 
-    debug writeln("... generating map");
+    debug writeln("... generating map (whilst reticulating splines)");
     
     //default to land
     foreach(y; 0..MapSize)
@@ -34,7 +35,7 @@ void generateMap()
     addSeeds(15, TileType.rock);
     createClumps(TileType.rock, 2, 4);    
 
-    addSeeds(50, TileType.tree);
+    addSeeds(100, TileType.tree);
     createClumps(TileType.tree, 3, 3);  
 }
 
@@ -61,7 +62,7 @@ void createClumps(TileType t, int bI, int i)
                    right = (x == MapSize - 1) ? 0 : x + 1;
                    top = (y == 0) ? MapSize - 1 : y - 1;
                    bottom = (y == MapSize - 1) ? 0 : y + 1;
-                   writeln(left);
+                   
                    
                    if(uniform(0, 1.0) > randVal) buffer[top][left] = Tile(t, bI, false);
                    if(uniform(0, 1.0) > randVal) buffer[top][x] = Tile(t, bI, false);

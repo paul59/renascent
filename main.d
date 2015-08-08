@@ -23,6 +23,7 @@ import allegro5.allegro_color;
 // app imports
 import game : runGame;
 import tiles;
+import entity;
 
 
 // allegro global variables
@@ -34,14 +35,17 @@ ALLEGRO_FONT* messageFont;
 // app global variables
 ALLEGRO_BITMAP* imgTileSet, imgPlayer;
 Tile[MapSize][MapSize] worldMap;
-int playerX, playerY;
+Player player;
 bool[string] keyList;
+enum MessageBuffer = 20;
+string[MessageBuffer] messageLines;
 
 
 // app enums
 enum TileSize = 16;
 enum MapSize = 100;
-
+enum Direction {north, east, south, west};
+enum TileType {water, grass, rock, tree};
 
 
 int main()
@@ -63,6 +67,7 @@ int main()
         al_register_event_source(queue, al_get_keyboard_event_source());
         al_register_event_source(queue, al_get_mouse_event_source());
 
+        al_set_window_title(display, "Renascent");
         debug writeln("... allegro initialised");
 
         //init the keyboard AA
@@ -71,6 +76,7 @@ int main()
         keyList["down"] = false;
         keyList["left"] = false;
         keyList["right"] = false;
+        keyList["action"] = false;
 
 
 

@@ -19,18 +19,18 @@ import main :   MapSize,
                 imgTileSet,
                 imgPlayer,
                 TileSize,
-                playerX,
-                playerY,
+                player,
                 display,
-                messageFont;
+                messageFont,
+                messageLines;
 
 
 
 // draw 21x21 tiles centred on player
 void renderMap()
 {
-    int cellX = playerX - 10;
-    int cellY = playerY - 10;
+    int cellX = player.locX - 10;
+    int cellY = player.locY - 10;
     int startX = cellX;
 
     // draw to buffer
@@ -65,12 +65,33 @@ void renderPlayer()
 
     al_set_target_bitmap(al_get_backbuffer(display));
 
-    al_draw_bitmap(imgPlayer, 10 * TileSize, 10 * TileSize, 0);
+    al_draw_bitmap_region(imgPlayer, player.facing * TileSize, 0, TileSize, TileSize, 10 * TileSize, 10 * TileSize, 0);
 
 }
 
 void renderHUD()
 {
 	
-	al_draw_text(messageFont, al_map_rgb(255,255,255), 600, 0, ALLEGRO_ALIGN_CENTRE, "HUD");
+    
+    string output = "HP: " ~ to!string(player.hp);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), 0, 416, ALLEGRO_ALIGN_LEFT, output.toStringz);
+
+    output = "ATT: " ~ to!string(player.att);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), 0, 432, ALLEGRO_ALIGN_LEFT, output.toStringz);
+    
+    output = "DEF: " ~ to!string(player.hp);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), 0, 448, ALLEGRO_ALIGN_LEFT, output.toStringz);
+    
+}
+
+
+void renderMessages()
+{
+    
+    foreach(y, output; messageLines)
+    {
+        al_draw_text(messageFont, al_map_rgb(255,255,255), 500, y * 16, ALLEGRO_ALIGN_LEFT, output.toStringz);
+        
+    }
+    
 }

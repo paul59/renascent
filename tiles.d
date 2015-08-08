@@ -1,7 +1,5 @@
 
 
-enum TileType {water, grass, rock, tree};
-
 struct Tile
 {
 

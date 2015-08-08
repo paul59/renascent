@@ -15,8 +15,8 @@ import  main :
         imgPlayer,
         TileSize,
         MapSize,
-        playerX,
-        playerY,
+        MessageBuffer,
+        player,
         worldMap;
 
 import  world :
@@ -24,9 +24,9 @@ import  world :
 
 import  render;
 
-import    input;
+import  input;
 
-
+import  entity;
 
 
 
@@ -65,14 +65,23 @@ void newGame()
         rY = uniform(0, MapSize);
         
     } while( worldMap[rY][rX].tileType != 1);
-    playerX = rX;
-    playerY = rY;    
+    player.locX = rX;
+    player.locY = rY; 
+    player.facing = Direction.south;
+    player.hp = 25;
+    player.att = 5;
+    player.def = 5;   
     // generateNPCs();
     // generatePlayer();
 
 
     // play until quit
     debug writeln("... entering main loop");
+    
+    addMessage("Renascent...");
+    addMessage("Arrows: Move");
+    addMessage("NumPad Arrows: Face");
+    addMessage("NumPad 0: Action");
     while(flagPlaying)
     {
 
@@ -80,18 +89,25 @@ void newGame()
         updateKeys();
 
         if(keyList["esc"]) flagPlaying = false;
+        
+        if(keyList["action"])
+        {
+            addMessage("some action attempted");
+            keyList["action"] = false;
+        }
 
         if(keyList["up"])
         {        
             if(canGoNorth())
             {
-                if(playerY > 0)
+                if(player.locY > 0)
                 {
-                    --playerY;
+                    --player.locY;
                 } else
                 {
-                    playerY = MapSize - 1;
+                    player.locY = MapSize - 1;
                 }
+                //player.facing = Direction.north;
             }
             keyList["up"] = false;
         }
@@ -100,13 +116,14 @@ void newGame()
         {
             if(canGoSouth())
             {            
-                if(playerY < MapSize-1)
+                if(player.locY < MapSize-1)
                 {
-                    ++playerY;
+                    ++player.locY;
                 } else
                 {
-                    playerY = 0;
+                    player.locY = 0;
                 }
+                //player.facing = Direction.south;
             }
             keyList["down"] = false;
         }
@@ -115,13 +132,14 @@ void newGame()
         {
             if(canGoWest())
             {
-                if(playerX > 0)
+                if(player.locX > 0)
                 {
-                    --playerX;
+                    --player.locX;
                 } else
                 {
-                    playerX = MapSize - 1;
+                    player.locX = MapSize - 1;
                 }
+                //player.facing = Direction.west;
             }
             keyList["left"] = false;
         }
@@ -130,21 +148,23 @@ void newGame()
         {
             if(canGoEast())
             {
-                if(playerX < MapSize-1)
+                if(player.locX < MapSize-1)
                 {
-                    ++playerX;
+                    ++player.locX;
                 } else
                 {
-                    playerX = 0;
+                    player.locX = 0;
                 }
+                //player.facing = Direction.east;
             }
             keyList["right"] = false;
         }
 
-
+        al_clear_to_color(al_map_rgb(0, 0, 0));
         renderMap();
         renderPlayer();
         renderHUD();
+        renderMessages();
         
         al_flip_display();
     }
@@ -154,9 +174,9 @@ void newGame()
 
 bool canGoNorth()
 {
-    int testY = playerY - 1;
+    int testY = player.locY - 1;
     if(testY == -1) testY = MapSize - 1;
-    if(worldMap[testY][playerX].canPass) return true;
+    if(worldMap[testY][player.locX].canPass) return true;
     
     return false;
 }
@@ -164,18 +184,18 @@ bool canGoNorth()
 
 bool canGoSouth()
 {
-    int testY = playerY + 1;
+    int testY = player.locY + 1;
     if(testY == MapSize) testY = 0;
-    if(worldMap[testY][playerX].canPass) return true;
+    if(worldMap[testY][player.locX].canPass) return true;
     
     return false;
 }
 
 bool canGoWest()
 {
-    int testX = playerX - 1;
+    int testX = player.locX - 1;
     if(testX == -1) testX = MapSize - 1;
-    if(worldMap[playerY][testX].canPass) return true;
+    if(worldMap[player.locY][testX].canPass) return true;
     
     return false;
 }
@@ -183,9 +203,9 @@ bool canGoWest()
 
 bool canGoEast()
 {
-    int testX = playerX + 1;
+    int testX = player.locX + 1;
     if(testX == MapSize) testX = 0;
-    if(worldMap[playerY][testX].canPass) return true;
+    if(worldMap[player.locY][testX].canPass) return true;
     
     return false;
 }
@@ -201,10 +221,26 @@ bool loadResources()
     if(imgTileSet == null) return false;
     imgPlayer = al_load_bitmap("./resources/player.png");
     if(imgPlayer == null) return false;
-    messageFont = al_load_ttf_font("./resources/msgfont.ttf",16, 0 );
+    messageFont = al_load_ttf_font("./resources/msgfont.ttf",12, 0 );
     if(messageFont == null) return false;
     
     return true;
 
     
 }
+
+
+void addMessage(string mess)
+{
+    
+    // scroll existing messages up
+    foreach(i; 1..MessageBuffer)
+    {
+        messageLines[i-1] = messageLines[i];
+    }
+    
+    // add new message to end of list
+    messageLines[MessageBuffer - 1] = mess;
+    
+}
+
