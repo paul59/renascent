@@ -14,15 +14,8 @@ import allegro5.allegro_ttf;
 import allegro5.allegro_color;
 
 // app imports
-import main :   MapSize,
-                worldMap,
-                imgTileSet,
-                imgPlayer,
-                TileSize,
-                player,
-                display,
-                messageFont,
-                messageLines;
+import globals;
+import main;
 
 
 
@@ -71,16 +64,25 @@ void renderPlayer()
 
 void renderHUD()
 {
-	
+
     
-    string output = "HP: " ~ to!string(player.hp);
-    al_draw_text(messageFont, al_map_rgb(255,255,255), 0, 416, ALLEGRO_ALIGN_LEFT, output.toStringz);
+    string output = "Entity: " ~ player.entity.name;
+    al_draw_text(messageFont, al_map_rgb(255,255,255), StatsX, StatsY, ALLEGRO_ALIGN_LEFT, output.toStringz);
+        
+    output = "Soul Points: " ~ to!string(player.sp);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), StatsX, StatsY+16, ALLEGRO_ALIGN_LEFT, output.toStringz);	
+    
+    output = "Life Points: " ~ to!string(player.entity.basehp);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), StatsX, StatsY+32, ALLEGRO_ALIGN_LEFT, output.toStringz);
 
     output = "ATT: " ~ to!string(player.att);
-    al_draw_text(messageFont, al_map_rgb(255,255,255), 0, 432, ALLEGRO_ALIGN_LEFT, output.toStringz);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), StatsX, StatsY+48, ALLEGRO_ALIGN_LEFT, output.toStringz);
     
     output = "DEF: " ~ to!string(player.hp);
-    al_draw_text(messageFont, al_map_rgb(255,255,255), 0, 448, ALLEGRO_ALIGN_LEFT, output.toStringz);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), StatsX, StatsY+64, ALLEGRO_ALIGN_LEFT, output.toStringz);
+
+    output = "WOOD: " ~ to!string(player.wood);
+    al_draw_text(messageFont, al_map_rgb(255,255,255), StatsX, StatsY+80, ALLEGRO_ALIGN_LEFT, output.toStringz);
     
 }
 
@@ -90,7 +92,7 @@ void renderMessages()
     
     foreach(y, output; messageLines)
     {
-        al_draw_text(messageFont, al_map_rgb(255,255,255), 500, y * 16, ALLEGRO_ALIGN_LEFT, output.toStringz);
+        al_draw_text(messageFont, al_map_rgb(255,255,255), MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, output.toStringz);
         
     }
     

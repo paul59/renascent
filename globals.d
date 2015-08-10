@@ -7,13 +7,40 @@ bool[string] keyList;
 string[MessageBuffer] messageLines;
 
 
+
+
+
 // app enums
-enum TileSize = 16;
+enum TileSize = 32;
 enum MapSize = 100;
+// position of message window and stats display
+enum MsgBoxX = 4;
+enum MsgBoxY = 400;
+enum StatsX = 700;
+enum StatsY = 16;
+
 enum Direction {north, east, south, west};
 enum TileType {water, grass, rock, tree};
 enum EntityType {human, rat, pig, bear, snake, ogre, butterfly}
 enum MessageBuffer = 20;
+
+
+struct Creature
+{
+    
+    string name;
+    int basehp;
+   
+}
+
+Creature[] creature =   [   {"Human", 25},
+                            {"Rat", 3},
+                            {"Pig", 14},
+                            {"Bear", 32},
+                            {"Snake", 11},
+                            {"Ogre", 50},
+                            {"Butterfly", 1}
+                        ];
 
 
 struct Tile
@@ -39,8 +66,10 @@ struct Player
     int locY;
     int facing;
     int hp;
+    int sp;
     int att;
     int def;
     int wood;
+    Creature entity;
 
 }

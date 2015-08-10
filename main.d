@@ -21,31 +21,15 @@ import allegro5.allegro_ttf;
 import allegro5.allegro_color;
 
 // app imports
-import game : runGame;
-import tiles;
-import entity;
+import globals;
+import game;
 
 
-// allegro global variables
+// app allegro global variables
 ALLEGRO_DISPLAY* display;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_FONT* messageFont;
-
-
-// app global variables
 ALLEGRO_BITMAP* imgTileSet, imgPlayer;
-Tile[MapSize][MapSize] worldMap;
-Player player;
-bool[string] keyList;
-enum MessageBuffer = 20;
-string[MessageBuffer] messageLines;
-
-
-// app enums
-enum TileSize = 16;
-enum MapSize = 100;
-enum Direction {north, east, south, west};
-enum TileType {water, grass, rock, tree};
 
 
 int main()
@@ -55,7 +39,7 @@ int main()
     {
         // set up allegro
         al_init();
-        display = al_create_display(800, 600);
+        display = al_create_display(1024, 768);
         queue = al_create_event_queue();
         al_install_keyboard();
         al_install_mouse();

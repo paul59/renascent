@@ -2,34 +2,18 @@
 import std.stdio : writeln;
 import std.random : uniform;
 
-// allegro imports
+// allegro imglobals!"ports
 import allegro5.allegro;
 import allegro5.allegro_ttf;
 import allegro5.allegro_font;
 
 // app imports
-import  main :
-        queue,
-        messageFont,
-        imgTileSet,
-        imgPlayer,
-        TileSize,
-        MapSize,
-        TileType,
-        MessageBuffer,
-        player,
-        worldMap;
-
-import  world :
-        generateMap;
-
+import globals;
+import  main;
+import  world;
 import  render;
-
 import  input;
 
-import  entity;
-
-import  tiles;
 
 
 
@@ -71,9 +55,10 @@ void newGame()
     player.locX = rX;
     player.locY = rY; 
     player.facing = Direction.south;
-    player.hp = 25;
+
     player.att = 5;
-    player.def = 5;   
+    player.def = 5; 
+    player.entity = creature[EntityType.ogre];  
     // generateNPCs();
 
 
@@ -83,6 +68,11 @@ void newGame()
     addMessage("NumPad Arrows: Face");
     addMessage("NumPad 0: Action");
     addMessage("Try actions to your *north* only");
+    addMessage("");
+    addMessage("When you have sufficient soul points you can");
+    addMessage("transform yourself into any previous form at will");
+    addMessage("");
+
     
     // play until quit
     debug writeln("... entering main loop");    
@@ -104,6 +94,7 @@ void newGame()
                 {
                     addMessage("Chop!");
                     worldMap[coordNorth(player.locY)][player.locX] = Tile(TileType.grass, 1, true);
+                    player.wood += 2 + uniform(1, 5);
                 }
                 if(worldMap[coordNorth(player.locY)][player.locX].tileType == TileType.water)
                 {

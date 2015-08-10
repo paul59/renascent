@@ -3,10 +3,8 @@
 import allegro5.allegro;
 
 // app imports
-import main :   queue,
-                keyList,
-                player,
-                Direction;
+import globals;
+import main;
 
 
 void updateKeys()
@@ -17,10 +15,7 @@ void updateKeys()
     // get next event from queue
     while(al_get_next_event(queue, &event))
     {
-
-        // could combine these switch atemants into one piece of code e.g., if keydownevent set flag true
-        // if keyupevent set flag false then use keyList["..."] = flag;
-        
+      
         // keydown event?
         if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {

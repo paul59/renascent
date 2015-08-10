@@ -6,11 +6,9 @@ import std.random : uniform;
 
 
 // app imports
-import main :   MapSize,
-                TileType,
-                worldMap;
-                
-import tiles;                
+import main;
+import globals;                
+
 
 
 void generateMap()
@@ -29,18 +27,19 @@ void generateMap()
     }
     
     // add water
-    addSeeds(10, TileType.water);
+    addSeeds(TileType.water, 0, 10);
     createClumps(TileType.water, 0, 10);
     
-    addSeeds(15, TileType.rock);
+    addSeeds(TileType.rock, 2, 15);
     createClumps(TileType.rock, 2, 4);    
 
-    addSeeds(100, TileType.tree);
+    addSeeds(TileType.tree, 3, 100);
     createClumps(TileType.tree, 3, 3);  
 }
 
 
-// tiletype, bitmap index, iterations
+
+// params: tiletype, bitmap index, iterations
 void createClumps(TileType t, int bI, int i)
 {
     
@@ -74,14 +73,11 @@ void createClumps(TileType t, int bI, int i)
                    if(uniform(0, 1.0) > randVal) buffer[bottom][right] = Tile(t, bI, false); 
                    
                }
-                
             }            
         }
         // move buffer to worldmap for next iteration
         worldMap = buffer;
-    
     }    
-    
 }
 
 
@@ -90,8 +86,8 @@ void createClumps(TileType t, int bI, int i)
 
 
 
-
-void addSeeds(int num, int val)
+// params tiletype, bitmap index, number of seeds
+void addSeeds(TileType t, int bI, int num)
 {
     
     // add up to num seeds - can be placed in same cell
@@ -99,7 +95,7 @@ void addSeeds(int num, int val)
     {
         int rX = uniform(0, MapSize);
         int rY = uniform(0, MapSize);
-        worldMap[rY][rX] = Tile(val, val, false);
+        worldMap[rY][rX] = Tile(t, bI, false);
         
     }
 }
