@@ -45,7 +45,11 @@ void newGame()
         return;
     }
         
+    // init map
     generateMap();
+    
+    
+    // init player
     int rX, rY;
     do
     {
@@ -56,11 +60,20 @@ void newGame()
     player.locX = rX;
     player.locY = rY; 
     player.facing = Direction.south;
-
     player.att = 5;
     player.def = 5; 
     player.entity = creature[EntityType.ogre];  
+    
     // generateNPCs();
+    mob.locX = 50;
+    mob.locY = 50;
+    mob.att = 0;
+    mob.def = 0;
+    mob.facing = Direction.south;
+    mob.hp = 1;
+    mob.entity = creature[EntityType.butterfly];
+    
+    
 
 
    
@@ -72,6 +85,10 @@ void newGame()
     addMessage("When you have sufficient soul points you can");
     addMessage("transform yourself into any previous form at will");
     addMessage("");
+    addMessage("If you could find a compass, you could work out your");
+    addMessage("position... handy for quests");
+    addMessage("");
+    addMessage("LOOK OUT out for the giant red butterfly!");
 
     
     // play until quit
@@ -131,6 +148,7 @@ void newGame()
         al_clear_to_color(al_map_rgb(0, 0, 0));
         renderMap();
         renderPlayer();
+        renderMobs();
         renderHUD();
         renderMessages();
         al_flip_display();
@@ -229,6 +247,8 @@ bool loadResources()
     if(imgTileSet == null) return false;
     imgPlayer = al_load_bitmap("./resources/player.png");
     if(imgPlayer == null) return false;
+    imgMob = al_load_bitmap("./resources/mob.png");
+    if(imgMob == null) return false;    
     messageFont = al_load_ttf_font("./resources/msgfont.ttf",12, 0 );
     if(messageFont == null) return false;
     

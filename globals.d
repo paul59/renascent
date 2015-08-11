@@ -3,6 +3,7 @@
 
 Tile[MapSize][MapSize] worldMap;
 Player player;
+Mob mob;
 bool[string] keyList;
 string[MessageBuffer] messageLines;
 
@@ -65,14 +66,26 @@ struct Tile
 struct Player
 {
 
+    int locX;               // location x, y
+    int locY;
+    int facing;             // facing direction
+    int hp;                 // hit points
+    int sp;                 // soul points
+    int att;                // attack
+    int def;                // defense
+    int wood;               // er, wood
+    Creature entity;        // what type of creature
+
+}
+
+
+struct Mob
+{
     int locX;
     int locY;
     int facing;
     int hp;
-    int sp;
     int att;
     int def;
-    int wood;
-    Creature entity;
-
+    Creature entity;        
 }

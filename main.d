@@ -29,7 +29,7 @@ import game;
 ALLEGRO_DISPLAY* display;
 ALLEGRO_EVENT_QUEUE* queue;
 ALLEGRO_FONT* messageFont;
-ALLEGRO_BITMAP* imgTileSet, imgPlayer;
+ALLEGRO_BITMAP* imgTileSet, imgPlayer, imgMob;
 
 
 int main()

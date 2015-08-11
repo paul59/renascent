@@ -3,6 +3,7 @@
 // D imports
 import std.conv;
 import std.string;
+import std.math : abs;
 
 
 // allegro imports
@@ -61,6 +62,34 @@ void renderPlayer()
     al_draw_bitmap_region(imgPlayer, player.facing * TileSize, 0, TileSize, TileSize, 10 * TileSize, 10 * TileSize, 0);
 
 }
+
+
+
+
+void renderMobs()
+{
+    
+    al_set_target_bitmap(al_get_backbuffer(display));
+    
+    if( abs(mob.locX - player.locX) <= 10 && abs(mob.locY - player.locY) <= 10)
+    {
+
+        int dX = mob.locX - player.locX;
+        int dY = mob.locY - player.locY;
+        
+        // ignore facing for now
+        al_draw_bitmap_region(imgMob, 0, 0, TileSize, TileSize, 10 * TileSize + dX * TileSize, 10 * TileSize + dY * TileSize, 0);
+        
+        //al_draw_bitmap_region(imgPlayer, player.facing * TileSize, 0, TileSize, TileSize, 10 * TileSize, 10 * TileSize, 0);
+    
+    }
+    
+}
+
+
+
+
+
 
 void renderHUD()
 {
