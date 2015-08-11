@@ -1,6 +1,7 @@
 // D imports
 import std.stdio : writeln;
 import std.random : uniform;
+import std.conv;
 
 // allegro imglobals!"ports
 import allegro5.allegro;
@@ -67,7 +68,6 @@ void newGame()
     addMessage("Arrows: Move");
     addMessage("NumPad Arrows: Face");
     addMessage("NumPad 0: Action");
-    addMessage("Try actions to your *north* only");
     addMessage("");
     addMessage("When you have sufficient soul points you can");
     addMessage("transform yourself into any previous form at will");
@@ -87,31 +87,7 @@ void newGame()
         if(keyList["action"])
         {
             
-            switch(player.facing)
-            {
-                case Direction.north :
-                if(worldMap[coordNorth(player.locY)][player.locX].tileType == TileType.tree)
-                {
-                    addMessage("Chop!");
-                    worldMap[coordNorth(player.locY)][player.locX] = Tile(TileType.grass, 1, true);
-                    player.wood += 2 + uniform(1, 5);
-                }
-                if(worldMap[coordNorth(player.locY)][player.locX].tileType == TileType.water)
-                {
-                    addMessage("Gulp, slurp... you feel refreshed");
-                }
-                if(worldMap[coordNorth(player.locY)][player.locX].tileType == TileType.rock)
-                {
-                    addMessage("Smasho. You got rocks");
-                    worldMap[coordNorth(player.locY)][player.locX] = Tile(TileType.grass, 1, true);
-                }                
-                break;
-                
-                default:
-                addMessage("Undefined action attempted. LOL");
-            }
-            
-            
+            processAction();         
             keyList["action"] = false;
         }
 
@@ -276,3 +252,78 @@ void addMessage(string mess)
     
 }
 
+
+
+void processAction()
+{
+    
+    // get cell on which action will be performed
+    int targetX, targetY;
+    
+    switch(player.facing)
+    {
+        case Direction.north :
+            targetX = player.locX;
+            targetY = coordNorth(player.locY);
+            break;
+        case Direction.south :
+            targetX = player.locX;
+            targetY = coordSouth(player.locY);
+            break;        
+        case Direction.west :
+            targetY = player.locY;
+            targetX = coordWest(player.locX);            
+            break;         
+        case Direction.east :
+            targetY = player.locY;
+            targetX = coordEast(player.locX);            
+            break;           
+        default:
+        
+    }    
+
+
+    // process the action, depends upon type of tile in target cell
+    switch(worldMap[targetY][targetX].tileType)
+    {
+        
+        case TileType.tree :
+            addMessage("Chop...");
+            --worldMap[targetY][targetX].hp;
+            if(worldMap[targetY][targetX].hp == 0)
+            {
+                worldMap[targetY][targetX] = Tile(TileType.grass, 1, true, -1);
+                addMessage("Timber....!");
+                player.wood += 2 + uniform(1, 5);
+            } else
+            {
+                addMessage("That tree will take another " ~ to!string(worldMap[targetY][targetX].hp) ~ " blows to fell");
+                
+            }
+            break;
+            
+        case TileType.water :
+            addMessage("Gulp, slurp... you feel refreshed");
+            break;
+        
+        case TileType.rock :
+            --worldMap[targetY][targetX].hp;
+            if(worldMap[targetY][targetX].hp == 0)
+            {
+                worldMap[targetY][targetX] = Tile(TileType.grass, 1, true, -1);
+                addMessage("The rock crumbles....");
+                player.wood += 2 + uniform(1, 5);
+            } else
+            {
+                addMessage("This rock needs another " ~ to!string(worldMap[targetY][targetX].hp) ~ " blows to break");
+                
+            }
+            break;
+        
+        default: 
+            addMessage("?");
+            break;          
+        
+    }
+       
+}

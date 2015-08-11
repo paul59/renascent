@@ -14,15 +14,15 @@ string[MessageBuffer] messageLines;
 enum TileSize = 32;
 enum MapSize = 100;
 // position of message window and stats display
-enum MsgBoxX = 4;
+enum MsgBoxX = 680;
 enum MsgBoxY = 400;
-enum StatsX = 700;
+enum StatsX = 680;
 enum StatsY = 16;
-
 enum Direction {north, east, south, west};
 enum TileType {water, grass, rock, tree};
 enum EntityType {human, rat, pig, bear, snake, ogre, butterfly}
 enum MessageBuffer = 20;
+
 
 
 struct Creature
@@ -55,6 +55,9 @@ struct Tile
     bool canPass;           // whether an entity can enter the tile
                             // water is passable subject ot other checks (eg if player also has a boat)
                             // wall or rock is not passable
+    
+    int hp;                 // hit points for destructible terrain, eg wood, rock
+                            // non-destructible tiles have -1 hp
 }
 
 
