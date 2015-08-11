@@ -2,6 +2,8 @@
 // allegro imports
 import allegro5.allegro;
 
+import std.conv;
+
 // app imports
 import globals;
 import main;
@@ -94,8 +96,14 @@ void updateKeys()
             }
         }
         */
+        
+        if(event.type == ALLEGRO_EVENT_MOUSE_AXES || event.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY)
+        {       
+       
+            mouseX = event.mouse.x;
+            mouseY = event.mouse.y;
+
+        }
 
     }
-
-
 }

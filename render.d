@@ -114,6 +114,7 @@ void renderHUD()
     output = "WOOD: " ~ to!string(player.wood);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+80, ALLEGRO_ALIGN_LEFT, output.toStringz);
     
+    
 }
 
 
@@ -125,6 +126,21 @@ void renderMessages()
     {
         al_draw_text(messageFont, colorYellow, MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, output.toStringz);
         
+    }
+    
+}
+
+
+void renderCursor()
+{
+    
+    int mouseDrawX = (mouseX / TileSize) * TileSize;
+    int mouseDrawY = (mouseY / TileSize) * TileSize;
+    
+    // only draw if over map :P
+    if(mouseX < 21*TileSize && mouseY < 21*TileSize)
+    {
+        al_draw_rectangle( mouseDrawX, mouseDrawY, mouseDrawX + TileSize, mouseDrawY + TileSize, al_map_rgb(255,255,255), 1);
     }
     
 }

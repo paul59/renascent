@@ -150,6 +150,7 @@ void newGame()
         renderPlayer();
         renderMobs();
         renderHUD();
+        renderCursor();
         renderMessages();
         al_flip_display();
     }

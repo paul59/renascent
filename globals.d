@@ -6,6 +6,7 @@ Player player;
 Mob mob;
 bool[string] keyList;
 string[MessageBuffer] messageLines;
+int mouseX, mouseY;
 
 
 
