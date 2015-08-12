@@ -49,6 +49,8 @@ void newGame()
     generateMap();
     
     
+    flagMouseOverMap = false;
+    
     // init player
     int rX, rY;
     do

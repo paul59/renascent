@@ -114,6 +114,40 @@ void renderHUD()
     output = "WOOD: " ~ to!string(player.wood);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+80, ALLEGRO_ALIGN_LEFT, output.toStringz);
     
+    // show info about tile under mouse cursor
+    string[int] tileNames = [ 0:"Water", 1:"Grass", 2:"Rock", 3:"Tree"];
+    if(flagMouseOverMap)
+    {
+        
+        // get screen cell eg 5,5
+        
+        int mouseScreenCellX = mouseX/TileSize;
+        int mouseScreenCellY = mouseY/TileSize;
+        
+        // convert to world co-ords, wrap if required
+        int wX = player.locX + (mouseScreenCellX - 10);
+        int wY = player.locY + (mouseScreenCellY - 10);
+        
+        if(wX < 0 )
+        {
+            wX += MapSize;
+        }
+        if(wX > MapSize-1 )
+        {
+            wX -= MapSize;
+        }        
+        if(wY < 0 )
+        {
+            wY += MapSize;
+        }
+        if(wY > MapSize - 1 )
+        {
+            wY -= MapSize;
+        }                 
+        output = "Terrain: " ~ tileNames[worldMap[wY][wX].tileType];
+        al_draw_text(messageFont, colorWhite, StatsX, StatsY+128, ALLEGRO_ALIGN_LEFT, output.toStringz);
+        
+    }
     
 }
 
@@ -137,10 +171,13 @@ void renderCursor()
     int mouseDrawX = (mouseX / TileSize) * TileSize;
     int mouseDrawY = (mouseY / TileSize) * TileSize;
     
-    // only draw if over map :P
+    // only draw if over map 
+    flagMouseOverMap = false;
     if(mouseX < 21*TileSize && mouseY < 21*TileSize)
     {
         al_draw_rectangle( mouseDrawX, mouseDrawY, mouseDrawX + TileSize, mouseDrawY + TileSize, al_map_rgb(255,255,255), 1);
+        flagMouseOverMap = true;
     }
     
 }
+

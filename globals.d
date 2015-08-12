@@ -7,6 +7,8 @@ Mob mob;
 bool[string] keyList;
 string[MessageBuffer] messageLines;
 int mouseX, mouseY;
+bool flagMouseOverMap;
+
 
 
 
@@ -22,6 +24,7 @@ enum StatsX = 680;
 enum StatsY = 16;
 enum Direction {north, east, south, west};
 enum TileType {water, grass, rock, tree};
+
 enum EntityType {human, rat, pig, bear, snake, ogre, butterfly}
 enum MessageBuffer = 20;
 
