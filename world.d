@@ -136,31 +136,31 @@ void generateMap()
     {
         foreach(x; 0..MapSize)
         {
-            worldMap[y][x] = Tile(TileType.grass, 1, true, -1);
+            worldMap[y][x] = Tile(TileType.grass, 1, true);
         }
     }
  
     import dungeon;
     // add water
-    addSeeds(TileType.water, 0, 10, -1);
-    createClumps(TileType.water, 0, 10, -1);
+    addSeeds(TileType.water, 0, 10);
+    createClumps(TileType.water, 0, 10);
  
     // rocks
     // give random hit points to rocks and trees
     int hpBase = 10;
-    addSeeds(TileType.rock, 2, 15, hpBase);
-    createClumps(TileType.rock, 2, 4, hpBase);
+    addSeeds(TileType.rock, 2, 15);
+    createClumps(TileType.rock, 2, 4);
 
     // trees
     hpBase = 5;
-    addSeeds(TileType.tree, 3, 100, hpBase);
-    createClumps(TileType.tree, 3, 3, hpBase);
+    addSeeds(TileType.tree, 3, 100);
+    createClumps(TileType.tree, 3, 3);
 }
 
 
 
 // params: tiletype, bitmap index, iterations, tile's hp
-void createClumps(TileType t, int bI, int i, int hpBaseVal)
+void createClumps(TileType t, int bI, int i)
 {
  
     Tile[][] buffer = copy2DArray(worldMap);
@@ -182,23 +182,15 @@ void createClumps(TileType t, int bI, int i, int hpBaseVal)
                    top = (y == 0) ? MapSize - 1 : y - 1;
                    bottom = (y == MapSize - 1) ? 0 : y + 1;
                    
-                   // water is -1 hp, trees and rocks have random hp 
-                   int hpVal;
-                   if( t == TileType.water )
-                   {
-                        hpVal = -1;
-                   } else
-                   {
-                        hpVal = uniform(hpBaseVal, hpBaseVal * 2);
-                   }
-                   if(uniform(0, 1.0) > randVal) buffer[top][left] = Tile(t, bI, false, hpVal);
-                   if(uniform(0, 1.0) > randVal) buffer[top][x] = Tile(t, bI, false, hpVal);
-                   if(uniform(0, 1.0) > randVal) buffer[top][right] = Tile(t, bI, false, hpVal);
-                   if(uniform(0, 1.0) > randVal) buffer[y][left] = Tile(t, bI, false, hpVal); 
-                   if(uniform(0, 1.0) > randVal) buffer[y][right] = Tile(t, bI, false, hpVal); 
-                   if(uniform(0, 1.0) > randVal) buffer[bottom][left] = Tile(t, bI, false, hpVal); 
-                   if(uniform(0, 1.0) > randVal) buffer[bottom][x] = Tile(t, bI, false, hpVal); 
-                   if(uniform(0, 1.0) > randVal) buffer[bottom][right] = Tile(t, bI, false, hpVal); 
+ 
+                   if(uniform(0, 1.0) > randVal) buffer[top][left] = Tile(t, bI, false);
+                   if(uniform(0, 1.0) > randVal) buffer[top][x] = Tile(t, bI, false);
+                   if(uniform(0, 1.0) > randVal) buffer[top][right] = Tile(t, bI, false);
+                   if(uniform(0, 1.0) > randVal) buffer[y][left] = Tile(t, bI, false); 
+                   if(uniform(0, 1.0) > randVal) buffer[y][right] = Tile(t, bI, false); 
+                   if(uniform(0, 1.0) > randVal) buffer[bottom][left] = Tile(t, bI, false); 
+                   if(uniform(0, 1.0) > randVal) buffer[bottom][x] = Tile(t, bI, false); 
+                   if(uniform(0, 1.0) > randVal) buffer[bottom][right] = Tile(t, bI, false); 
                    
                }
             }            
@@ -215,7 +207,7 @@ void createClumps(TileType t, int bI, int i, int hpBaseVal)
 
 
 // params tiletype, bitmap index, number of seeds, hp of tile
-void addSeeds(TileType t, int bI, int num,  int hpBaseVal)
+void addSeeds(TileType t, int bI, int num)
 {
     
     // add up to num seeds - can be placed in same cell
@@ -225,7 +217,7 @@ void addSeeds(TileType t, int bI, int num,  int hpBaseVal)
         int rY = uniform(0, MapSize);
         // not passable by default (eg tree, rock)
         // just use base value for hp
-        worldMap[rY][rX] = Tile(t, bI, false, hpBaseVal);
+        worldMap[rY][rX] = Tile(t, bI, false);
         
     }
 }
