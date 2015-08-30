@@ -49,7 +49,7 @@ Tile[][] generateBSPDungeonLevel (TileRegion region, Tile[][] tiles)
             newTiles = filterAndConvertInRect(
                     newTiles,
                     addRandomRectInTileRegion(r),
-                    (tile => Tile(TileType.grass, 1, true, tile.hp)),
+                    (tile => Tile(TileType.grass, 1, true)),
                     ((newTiles, x, y) => true));
         }
     }
@@ -302,19 +302,19 @@ Tile[][] generateCADungeonLevel (TileRegion region, Tile[][] tiles)
     newTiles = filterAndConvertInRect(
             newTiles,
             region.rect,
-            (tile) => Tile(TileType.grass, 1, true, tile.hp),
+            (tile) => Tile(TileType.grass, 1, true),
             (tiles, x, y) => uniform(0.0, 1.0) > 0.45);
 
     //iterate with the rule
     newTiles = filterAndConvertInRect(
             newTiles,
             region.rect,
-            (tile) => Tile(TileType.grass, 1, true, tile.hp),
+            (tile) => Tile(TileType.grass, 1, true),
             (tiles, x, y) => countNeighboursOfType(tiles,x,y,TileType.grass) > 5);
     newTiles = filterAndConvertInRect(
             newTiles,
             region.rect,
-            (tile) => Tile(TileType.rock, 2, false, tile.hp),
+            (tile) => Tile(TileType.rock, 2, false),
             (tiles, x, y) => countNeighboursOfType(tiles,x,y,TileType.grass) <= 5);
 
 
@@ -322,7 +322,7 @@ Tile[][] generateCADungeonLevel (TileRegion region, Tile[][] tiles)
            //newTiles,
            //region.rect,
            //Point(0,0),
-           //tile => Tile(TileType.tree, tile.bitmapIndex, tile.canPass, tile.hp),
+           //tile => Tile(TileType.tree, tile.bitmapIndex, tile.canPass),
            //(tiles, x, y) => tiles[x][y].tileType != TileType.rock);
 
     //writeln("after a flood of 3 from tile 0,0");
@@ -439,7 +439,7 @@ private Tile[][] filterAndConvertOnWalk(
     ////writeln("creating start room");
     ////Rect startRoom = Rect(0, 3, 0, 3);
     ////tiles = filterAndConvertInRect(tiles, startRoom,
-            ////tile => Tile(TileType.rock, tile.bitmapIndex, tile.canPass, tile.hp),
+            ////tile => Tile(TileType.rock, tile.bitmapIndex, tile.canPass),
             ////(tiles, x, y) => true);
 
     ////writeln("starting walk");
@@ -447,7 +447,7 @@ private Tile[][] filterAndConvertOnWalk(
             ////tiles,
             ////level.rect,
             ////Point(5,5),
-            ////tile => Tile(TileType.rock, tile.bitmapIndex, tile.canPass, tile.hp),
+            ////tile => Tile(TileType.rock, tile.bitmapIndex, tile.canPass),
             ////(tiles, x, y) => true,
             ////(tiles, x, y) => tiles[x][y].tileType == TileType.rock);
 
