@@ -29,6 +29,9 @@ void updateKeys()
                 keyList["esc"] = true;
                 break;
 
+                case ALLEGRO_KEY_Q:
+                keyList["esc"] = true;
+
                 // action button
                 case ALLEGRO_KEY_PAD_0:
                 keyList["action"] = true;

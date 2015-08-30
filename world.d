@@ -9,6 +9,102 @@ import std.random : uniform;
 import main;
 import globals;                
 
+struct Rect
+{
+    size_t left, right, top, bottom;
+
+    string toString()
+    {
+        import std.string;
+        return format("l:%s, r:%s, t:%s, b:%s", left, right, top, bottom);
+    }
+
+}
+
+struct Point
+{
+    size_t x, y;
+
+    string toString()
+    {
+        import std.string;
+        return format("x:%s, y:%s", x, y);
+    }
+
+    bool opEquals()(auto ref const Point rhs) const
+    {
+        return (x == rhs.x) && (y == rhs.y);
+    }
+}
+
+T[][] copy2DArray(T)(T[][] array)
+{
+    T[][] newArray;
+
+    foreach (row; array) {
+        newArray ~= row.dup;
+    }
+    return newArray;
+}
+
+string tileArrayToString(Tile[][] tiles)
+{
+    import std.string;
+    string returnString;
+    foreach (Tile[] row; tiles)
+    {
+        foreach (Tile tile; row)
+        {
+            returnString ~= format("%s", tile.tileType);
+        }
+        returnString ~= ("\n");
+    }
+    return returnString;
+}
+
+Tile[][] floodFillInRect(
+        Tile[][] tiles,
+        Rect rect,
+        Point point,
+        Tile function(Tile) converter,
+        bool function(Tile[][], size_t, size_t) predicate)
+{
+    import std.algorithm : canFind;
+
+    Tile[][] newTiles = copy2DArray(tiles);
+    Point[] queue = [point];
+    Point[] visitedPoints = [];
+
+    while (queue.length != 0)
+    {
+        point = queue[0];
+        queue = queue[1..$];
+
+        if (!(canFind(visitedPoints, point))
+                && predicate(newTiles, point.x, point.y))
+        {
+            newTiles[point.x][point.y] = converter(newTiles[point.x][point.y]);
+            if (point.x > rect.left)
+            {
+                queue ~= Point(point.x - 1, point.y);
+            }
+            if (point.x < rect.right - 1)
+            {
+                queue ~= Point(point.x + 1, point.y);
+            }
+            if (point.y > rect.top)
+            {
+                queue ~= Point(point.x, point.y - 1);
+            }
+            if (point.y < rect.bottom - 1)
+            {
+                queue ~= Point(point.x, point.y + 1);
+            }
+        }
+        visitedPoints ~= point;
+    }
+    return newTiles;
+}
 
 
 void generateMap()
@@ -26,20 +122,29 @@ void generateMap()
         }
     }
     
+    import dungeon;
     // add water
     addSeeds(TileType.water, 0, 10, -1);
     createClumps(TileType.water, 0, 10, -1);
+    writeln("after water");
+    writeln(tileArrayToString(worldMap));
     
     // rocks
     // give random hit points to rocks and trees
     int hpBase = 10;
     addSeeds(TileType.rock, 2, 15, hpBase);
+    writeln("after adding rock seeds");
+    writeln(tileArrayToString(worldMap));
     createClumps(TileType.rock, 2, 4, hpBase);    
+    writeln("after rock");
+    writeln(tileArrayToString(worldMap));
 
     // trees
     hpBase = 5;
     addSeeds(TileType.tree, 3, 100, hpBase);
     createClumps(TileType.tree, 3, 3, hpBase);  
+    writeln("finished generateMap()");
+    writeln(tileArrayToString(worldMap));
 }
 
 
@@ -48,7 +153,7 @@ void generateMap()
 void createClumps(TileType t, int bI, int i, int hpBaseVal)
 {
     
-    Tile[MapSize][MapSize] buffer = worldMap;
+    Tile[][] buffer = copy2DArray(worldMap);
     int left, top, right, bottom;
     float randVal = 0.6;
     
@@ -89,7 +194,7 @@ void createClumps(TileType t, int bI, int i, int hpBaseVal)
             }            
         }
         // move buffer to worldmap for next iteration
-        worldMap = buffer;
+        worldMap = copy2DArray(buffer);
     }    
 }
 

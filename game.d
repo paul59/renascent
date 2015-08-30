@@ -14,6 +14,7 @@ import  main;
 import  world;
 import  render;
 import  input;
+import dungeon;
 
 
 
@@ -47,18 +48,21 @@ void newGame()
         
     // init map
     generateMap();
-    
+    //TileRegion region = TileRegion([null,null],null,SplitType.vertical, Rect(0,100,0,100));
+    //worldMap = generateCADungeonLevel(region, copy2DArray(worldMap));
+    //worldMap = generateBSPDungeonLevel(region, copy2DArray(worldMap));
+
+    //writeln(tileArrayToString(worldMap));
     
     flagMouseOverMap = false;
-    
+ 
     // init player
     int rX, rY;
     do
     {
         rX = uniform(0, MapSize);
         rY = uniform(0, MapSize);
-        
-    } while( worldMap[rY][rX].tileType != 1);
+    } while( worldMap[rY][rX].tileType != TileType.grass);
     player.locX = rX;
     player.locY = rY; 
     player.facing = Direction.south;

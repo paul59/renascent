@@ -1,7 +1,7 @@
 
 
 
-Tile[MapSize][MapSize] worldMap;
+Tile[][] worldMap = new Tile[][](100,100);
 Player player;
 Mob mob;
 bool[string] keyList;
