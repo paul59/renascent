@@ -15,7 +15,7 @@ import world;
 import render;
 import input;
 import dungeon;
-import entity : EntityType, Entity, creature;
+import entity : Entity, Creatures;
 
 
 
@@ -66,28 +66,10 @@ void newGame()
  
 
     // init player
-    int rX, rY;
-    do
-    {
-        rX = uniform(0, MapSize);
-        rY = uniform(0, MapSize);
-    } while( worldMap[rY][rX].tileType != TileType.grass);
-    player.locX = rX;
-    player.locY = rY; 
-    player.facing = Direction.north;
-    player.att = 5;
-    player.def = 5; 
-    player.entity = creature[EntityType.ogre];  
+    player = Entity(Creatures.human);
     
     // generateNPCs();
-
-    mob.locX = 50;
-    mob.locY = 50;
-    mob.att = 0;
-    mob.def = 0;
-    mob.facing = Direction.south;
-    mob.hp = 1;
-    mob.entity = creature[EntityType.butterfly];
+    mob = Entity(Creatures.butterfly);
 
 
    
@@ -105,8 +87,8 @@ void newGame()
     addMessage("LOOK OUT out for the giant red butterfly!");
 
     
-    // play until quit
-    debug writeln("... entering main loop");    
+    // MAIN LOOP
+  
     while(flagPlaying)
     {
 
@@ -176,30 +158,22 @@ void newGame()
 
 int coordWest(int cX)
 {
-    
     return (cX == 0) ? MapSize - 1 : cX - 1;
-
 }
 
 int coordEast(int cX)
 {
-    
     return (cX == MapSize - 1) ? 0 : cX + 1;
-
 }
 
 int coordNorth(int cY)
 {
-    
     return (cY == 0) ? MapSize - 1 : cY - 1;
-
 }
 
 int coordSouth(int cY)
 {
-    
     return (cY == MapSize - 1) ? 0 : cY + 1;
-
 }
 
 
@@ -208,29 +182,25 @@ int coordSouth(int cY)
 bool canGoNorth(Entity e)
 {
     int testY = coordNorth(e.locY);       
-    if(worldMap[testY][e.locX].canPass) return true;
-    return false;
+    return (worldMap[testY][e.locX].canPass) ? true : false;
 }
 
 bool canGoSouth(Entity e)
 {
     int testY = coordSouth(e.locY);
-    if(worldMap[testY][e.locX].canPass) return true;    
-    return false;
+    return (worldMap[testY][e.locX].canPass) ? true : false;    
 }
 
 bool canGoWest(Entity e)
 {
     int testX = coordWest(e.locX);
-    if(worldMap[e.locY][testX].canPass) return true;
-    return false;
+    return (worldMap[e.locY][testX].canPass) ? true : false;
 }
 
 bool canGoEast(Entity e)
 {
     int testX = coordEast(e.locX);
-    if(worldMap[e.locY][testX].canPass) return true;
-    return false;
+    return (worldMap[e.locY][testX].canPass) ? true : false;
 }
 
 
