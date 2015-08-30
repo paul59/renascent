@@ -133,7 +133,6 @@ void generateMap()
         foreach(x; 0..MapSize)
         {
             worldMap[y][x] = Tile(TileType.grass, 1, true, -1);
-            
         }
     }
     
@@ -141,25 +140,17 @@ void generateMap()
     // add water
     addSeeds(TileType.water, 0, 10, -1);
     createClumps(TileType.water, 0, 10, -1);
-    writeln("after water");
-    writeln(tileArrayToString(worldMap));
     
     // rocks
     // give random hit points to rocks and trees
     int hpBase = 10;
     addSeeds(TileType.rock, 2, 15, hpBase);
-    writeln("after adding rock seeds");
-    writeln(tileArrayToString(worldMap));
     createClumps(TileType.rock, 2, 4, hpBase);    
-    writeln("after rock");
-    writeln(tileArrayToString(worldMap));
 
     // trees
     hpBase = 5;
     addSeeds(TileType.tree, 3, 100, hpBase);
     createClumps(TileType.tree, 3, 3, hpBase);  
-    writeln("finished generateMap()");
-    writeln(tileArrayToString(worldMap));
 }
 
 
