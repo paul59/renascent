@@ -17,14 +17,15 @@ import allegro5.allegro_color;
 // app imports
 import globals;
 import main;
+import entity : Entity;
 
 
 
 // draw 21x21 tiles centred on player
-void renderMap()
+void renderMap(Entity e)
 {
-    int cellX = player.locX - 10;
-    int cellY = player.locY - 10;
+    int cellX = e.locX - 10;
+    int cellY = e.locY - 10;
     int startX = cellX;
 
     // draw to buffer
@@ -54,33 +55,32 @@ void renderMap()
     }
 }
 
-void renderPlayer()
+void renderPlayer(Entity e)
 {
 
-    al_set_target_bitmap(al_get_backbuffer(display));
+    //al_set_target_bitmap(al_get_backbuffer(display));
 
-    al_draw_bitmap_region(imgPlayer, player.facing * TileSize, 0, TileSize, TileSize, 10 * TileSize, 10 * TileSize, 0);
+    al_draw_bitmap_region(imgPlayer, e.facing * TileSize, 0, TileSize, TileSize, 10 * TileSize, 10 * TileSize, 0);
+   
 
 }
 
 
 
 
-void renderMobs()
+void renderMobs(Entity e, Entity p)
 {
     
     al_set_target_bitmap(al_get_backbuffer(display));
     
-    if( abs(mob.locX - player.locX) <= 10 && abs(mob.locY - player.locY) <= 10)
+    if( abs(e.locX - e.locX) <= 10 && abs(e.locY - e.locY) <= 10)
     {
 
-        int dX = mob.locX - player.locX;
-        int dY = mob.locY - player.locY;
+        int dX = e.locX - p.locX;
+        int dY = e.locY - p.locY;
         
         // ignore facing for now
-        al_draw_bitmap_region(imgMob, 0, 0, TileSize, TileSize, 10 * TileSize + dX * TileSize, 10 * TileSize + dY * TileSize, 0);
-        
-        //al_draw_bitmap_region(imgPlayer, player.facing * TileSize, 0, TileSize, TileSize, 10 * TileSize, 10 * TileSize, 0);
+        al_draw_bitmap_region(imgMob, 0, 0, TileSize, TileSize, 10 * TileSize + dX * TileSize, 10 * TileSize + dY * TileSize, 0);      
     
     }
     
@@ -91,29 +91,32 @@ void renderMobs()
 
 
 
-void renderHUD()
+void renderHUD(Entity e)
 {
 
     ALLEGRO_COLOR colorWhite = al_map_rgb(255,255,255);
     
-    string output = "Entity: " ~ player.entity.name;
+    enum StatsX = 680;
+    enum StatsY = 16;
+    
+    
+    
+    string output = "Entity: " ~ e.entity.name;
     al_draw_text(messageFont, colorWhite, StatsX, StatsY, ALLEGRO_ALIGN_LEFT, output.toStringz);
         
-    output = "Soul Points: " ~ to!string(player.sp);
+    output = "Soul Points: " ~ to!string(e.sp);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+16, ALLEGRO_ALIGN_LEFT, output.toStringz);	
     
-    output = "Life Points: " ~ to!string(player.entity.basehp);
+    output = "Life Points: " ~ to!string(e.entity.basehp);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+32, ALLEGRO_ALIGN_LEFT, output.toStringz);
 
-    output = "ATT: " ~ to!string(player.att);
+    output = "ATT: " ~ to!string(e.att);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+48, ALLEGRO_ALIGN_LEFT, output.toStringz);
     
-    output = "DEF: " ~ to!string(player.hp);
+    output = "DEF: " ~ to!string(e.hp);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+64, ALLEGRO_ALIGN_LEFT, output.toStringz);
 
-    output = "WOOD: " ~ to!string(player.wood);
-    al_draw_text(messageFont, colorWhite, StatsX, StatsY+80, ALLEGRO_ALIGN_LEFT, output.toStringz);
-    
+ 
     // show info about tile under mouse cursor
     string[int] tileNames = [ 0:"Water", 1:"Grass", 2:"Rock", 3:"Tree"];
     if(flagMouseOverMap)
@@ -125,8 +128,8 @@ void renderHUD()
         int mouseScreenCellY = mouseY/TileSize;
         
         // convert to world co-ords, wrap if required
-        int wX = player.locX + (mouseScreenCellX - 10);
-        int wY = player.locY + (mouseScreenCellY - 10);
+        int wX = e.locX + (mouseScreenCellX - 10);
+        int wY = e.locY + (mouseScreenCellY - 10);
         
         if(wX < 0 )
         {
@@ -154,6 +157,8 @@ void renderHUD()
 
 void renderMessages()
 {
+    enum MsgBoxX = 680;
+    enum MsgBoxY = 400;
     
     ALLEGRO_COLOR colorYellow = al_map_rgb(255,255,0);
     foreach(y, output; messageLines)

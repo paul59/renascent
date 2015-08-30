@@ -7,9 +7,10 @@ import std.conv;
 // app imports
 import globals;
 import main;
+import entity : Entity;
 
 
-void updateKeys()
+Entity updateKeys(Entity e)
 {
     bool retVal = false;
     ALLEGRO_EVENT event;
@@ -41,33 +42,33 @@ void updateKeys()
                 // movement keys
                 case ALLEGRO_KEY_UP:
                 keyList["up"] = true;
-                player.facing = Direction.north;
+                e.facing = Direction.north;
                 break;
                 case ALLEGRO_KEY_DOWN:
-                player.facing = Direction.south;
+                e.facing = Direction.south;
                 keyList["down"] = true;
                 break;
                 case ALLEGRO_KEY_LEFT:
                 keyList["left"] = true;
-                player.facing = Direction.west;
+                e.facing = Direction.west;
                 break;
                 case ALLEGRO_KEY_RIGHT:
                 keyList["right"] = true;
-                player.facing = Direction.east;
+                e.facing = Direction.east;
                 break;
                 
                 // facing keys
                 case ALLEGRO_KEY_PAD_8:
-                player.facing = Direction.north;
+                e.facing = Direction.north;
                 break;
                 case ALLEGRO_KEY_PAD_6:
-                player.facing = Direction.east;
+                e.facing = Direction.east;
                 break; 
                 case ALLEGRO_KEY_PAD_2:
-                player.facing = Direction.south;
+                e.facing = Direction.south;
                 break;
                 case ALLEGRO_KEY_PAD_4:
-                player.facing = Direction.west;
+                e.facing = Direction.west;
                 break;                
                 
                 default:
@@ -110,4 +111,6 @@ void updateKeys()
         }
 
     }
+    
+    return e;
 }

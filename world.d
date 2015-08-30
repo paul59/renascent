@@ -7,7 +7,22 @@ import std.random : uniform;
 
 // app imports
 import main;
-import globals;                
+import globals; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
 
 struct Rect
 {

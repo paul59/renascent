@@ -10,11 +10,12 @@ import allegro5.allegro_font;
 
 // app imports
 import globals;
-import  main;
-import  world;
-import  render;
-import  input;
+import main;
+import world;
+import render;
+import input;
 import dungeon;
+import entity : EntityType, Entity, creature;
 
 
 
@@ -45,6 +46,9 @@ void newGame()
         writeln("Failed to load resources");
         return;
     }
+       
+       
+       
         
     // init map
     generateMap();
@@ -56,6 +60,11 @@ void newGame()
     
     flagMouseOverMap = false;
  
+ 
+    Entity player;
+    Entity mob;
+ 
+
     // init player
     int rX, rY;
     do
@@ -65,12 +74,13 @@ void newGame()
     } while( worldMap[rY][rX].tileType != TileType.grass);
     player.locX = rX;
     player.locY = rY; 
-    player.facing = Direction.south;
+    player.facing = Direction.north;
     player.att = 5;
     player.def = 5; 
     player.entity = creature[EntityType.ogre];  
     
     // generateNPCs();
+
     mob.locX = 50;
     mob.locY = 50;
     mob.att = 0;
@@ -78,8 +88,6 @@ void newGame()
     mob.facing = Direction.south;
     mob.hp = 1;
     mob.entity = creature[EntityType.butterfly];
-    
-    
 
 
    
@@ -103,20 +111,20 @@ void newGame()
     {
 
         // update the assoc array with key states
-        updateKeys();
+        player = updateKeys(player);
 
         if(keyList["esc"]) flagPlaying = false;
         
         if(keyList["action"])
         {
             
-            processAction();         
+            processAction(player);         
             keyList["action"] = false;
         }
 
         if(keyList["up"])
         {        
-            if(canGoNorth())
+            if(canGoNorth(player))
             {
                 player.locY = coordNorth(player.locY);            
             }
@@ -125,7 +133,7 @@ void newGame()
 
         if(keyList["down"])
         {
-            if(canGoSouth())
+            if(canGoSouth(player))
             {            
                 player.locY = coordSouth(player.locY);  
             }
@@ -134,7 +142,7 @@ void newGame()
 
         if(keyList["left"])
         {
-            if(canGoWest())
+            if(canGoWest(player))
             {
                 player.locX = coordWest(player.locX);              
             }
@@ -143,7 +151,7 @@ void newGame()
 
         if(keyList["right"])
         {
-            if(canGoEast())
+            if(canGoEast(player))
             {
                 player.locX = coordEast(player.locX);
                 
@@ -152,10 +160,10 @@ void newGame()
         }
 
         al_clear_to_color(al_map_rgb(0, 0, 0));
-        renderMap();
-        renderPlayer();
-        renderMobs();
-        renderHUD();
+        renderMap(player);
+        renderPlayer(player);
+        renderMobs(mob, player);
+        renderHUD(player);
         renderCursor();
         renderMessages();
         al_flip_display();
@@ -168,76 +176,60 @@ void newGame()
 
 int coordWest(int cX)
 {
-    if(cX == 0) 
-    {
-        return(MapSize - 1);
-    } else
-    {
-        return(cX - 1);
-    }
+    
+    return (cX == 0) ? MapSize - 1 : cX - 1;
+
 }
 
 int coordEast(int cX)
 {
-    if(cX == MapSize - 1) 
-    {
-        return(0);
-    } else
-    {
-        return(cX + 1);
-    }
+    
+    return (cX == MapSize - 1) ? 0 : cX + 1;
+
 }
 
 int coordNorth(int cY)
 {
-    if(cY == 0) 
-    {
-        return(MapSize - 1);
-    } else
-    {
-        return(cY - 1);
-    }
+    
+    return (cY == 0) ? MapSize - 1 : cY - 1;
+
 }
 
 int coordSouth(int cY)
 {
-    if(cY == MapSize - 1) 
-    {
-        return(0);
-    } else
-    {
-        return(cY + 1);
-    }
+    
+    return (cY == MapSize - 1) ? 0 : cY + 1;
+
 }
 
 
 
 // these function test if cell in given direction is passable
-bool canGoNorth()
+bool canGoNorth(Entity e)
 {
-    int testY = coordNorth(player.locY);       
-    if(worldMap[testY][player.locX].canPass) return true;
+    int testY = coordNorth(e.locY);       
+    if(worldMap[testY][e.locX].canPass) return true;
     return false;
 }
 
-bool canGoSouth()
+bool canGoSouth(Entity e)
 {
-    int testY = coordSouth(player.locY);
-    if(worldMap[testY][player.locX].canPass) return true;    
+    int testY = coordSouth(e.locY);
+    if(worldMap[testY][e.locX].canPass) return true;    
     return false;
 }
 
-bool canGoWest()
+bool canGoWest(Entity e)
 {
-    int testX = coordWest(player.locX);
-    if(worldMap[player.locY][testX].canPass) return true;
+    int testX = coordWest(e.locX);
+    if(worldMap[e.locY][testX].canPass) return true;
     return false;
 }
 
-bool canGoEast()
+bool canGoEast(Entity e)
 {
-    int testX = coordEast(player.locX);
-    if(worldMap[player.locY][testX].canPass) return true;
+    int testX = coordEast(e.locX);
+    if(worldMap[e.locY][testX].canPass) return true;
     return false;
 }
 
@@ -281,29 +273,29 @@ void addMessage(string mess)
 
 
 
-void processAction()
+void processAction(Entity e)
 {
     
     // get cell on which action will be performed
     int targetX, targetY;
     
-    switch(player.facing)
+    switch(e.facing)
     {
         case Direction.north :
-            targetX = player.locX;
-            targetY = coordNorth(player.locY);
+            targetX = e.locX;
+            targetY = coordNorth(e.locY);
             break;
         case Direction.south :
-            targetX = player.locX;
-            targetY = coordSouth(player.locY);
+            targetX = e.locX;
+            targetY = coordSouth(e.locY);
             break;        
         case Direction.west :
-            targetY = player.locY;
-            targetX = coordWest(player.locX);            
+            targetY = e.locY;
+            targetX = coordWest(e.locX);            
             break;         
         case Direction.east :
-            targetY = player.locY;
-            targetX = coordEast(player.locX);            
+            targetY = e.locY;
+            targetX = coordEast(e.locX);            
             break;           
         default:
         
@@ -314,37 +306,9 @@ void processAction()
     switch(worldMap[targetY][targetX].tileType)
     {
         
-        case TileType.tree :
-            addMessage("Chop...");
-            --worldMap[targetY][targetX].hp;
-            if(worldMap[targetY][targetX].hp == 0)
-            {
-                worldMap[targetY][targetX] = Tile(TileType.grass, 1, true, -1);
-                addMessage("Timber....!");
-                player.wood += 2 + uniform(1, 5);
-            } else
-            {
-                addMessage("That tree will take another " ~ to!string(worldMap[targetY][targetX].hp) ~ " blows to fell");
-                
-            }
-            break;
             
         case TileType.water :
             addMessage("Gulp, slurp... you feel refreshed");
-            break;
-        
-        case TileType.rock :
-            --worldMap[targetY][targetX].hp;
-            if(worldMap[targetY][targetX].hp == 0)
-            {
-                worldMap[targetY][targetX] = Tile(TileType.grass, 1, true, -1);
-                addMessage("The rock crumbles....");
-                player.wood += 2 + uniform(1, 5);
-            } else
-            {
-                addMessage("This rock needs another " ~ to!string(worldMap[targetY][targetX].hp) ~ " blows to break");
-                
-            }
             break;
         
         default: 
