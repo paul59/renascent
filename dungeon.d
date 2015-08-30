@@ -110,18 +110,12 @@ private TileRegion[] performBinarySplit (
         size_t splitX;
         if (splitRatio == 0.5)
         {
-            // and this!
-            //splitX = cast(int)floor(startWidth * 0.5);
             splitX = newRegions[parentRegionIndex].rect.right - startWidth/2;
         }
         else
         {
-            // this is the culprit!! causes lower coords than I'd like
-            // now getting horrible underflows
-            //int newLowerSplitX = cast(int)floor(startWidth * splitRatio);
-            //int newUpperSplitX = cast(int)(startWidth - floor(startWidth * splitRatio));
-            //splitX = uniform(newLowerSplitX, newUpperSplitX);
-            splitX = newRegions[parentRegionIndex].rect.right - startWidth/2;
+            splitX = uniform(newRegions[parentRegionIndex].rect.left + to!ulong(floor(startWidth*splitRatio))
+                    ,newRegions[parentRegionIndex].rect.right - to!ulong(floor(startWidth*splitRatio)));
         }
         //debug writefln("vertical split at %s", splitX);
 
@@ -139,15 +133,12 @@ private TileRegion[] performBinarySplit (
         size_t splitY;
         if (splitRatio == 0.5)
         {
-            //splitY = cast(int)floor(startHeight * 0.5);
             splitY = newRegions[parentRegionIndex].rect.bottom - startHeight/2;
         }
         else
         {
-            //int newLowerSplitY = cast(int)floor(startHeight * splitRatio);
-            //int newUpperSplitY = cast(int)(startHeight - floor(startHeight * splitRatio));
-            //splitY = uniform(newLowerSplitY, newUpperSplitY);
-            splitY = newRegions[parentRegionIndex].rect.bottom - startHeight/2;
+            splitY = uniform(newRegions[parentRegionIndex].rect.top + to!ulong(floor(startWidth*splitRatio))
+                    ,newRegions[parentRegionIndex].rect.bottom - to!ulong(floor(startWidth*splitRatio)));
         }
         //debug writefln("horizontal split at %s", splitY);
 
@@ -281,10 +272,7 @@ private void connectRegions(TileRegion parent)
         {
             writeln("one is inside two");
         }
-
-
     }
-
 }
 
 // do some cellular automata-based dungeon generation!!!
@@ -365,7 +353,6 @@ private Tile[][] filterAndConvertOnWalk(
         bool function(Tile[][], size_t, size_t) predicate,
         bool function(Tile[][], size_t, size_t) stopCondition)
 {
-    import std.stdio;
     import std.random : uniform;
 
     Tile[][] newTiles = copy2DArray(tiles);

@@ -52,6 +52,10 @@ struct Point
     }
 }
 
+struct Portal
+{
+}
+
 T[][] copy2DArray(T)(T[][] array)
 {
     T[][] newArray;
@@ -126,7 +130,7 @@ void generateMap()
 {
 
     debug writeln("... generating map");
-    
+ 
     //default to land
     foreach(y; 0..MapSize)
     {
@@ -135,22 +139,22 @@ void generateMap()
             worldMap[y][x] = Tile(TileType.grass, 1, true, -1);
         }
     }
-    
+ 
     import dungeon;
     // add water
     addSeeds(TileType.water, 0, 10, -1);
     createClumps(TileType.water, 0, 10, -1);
-    
+ 
     // rocks
     // give random hit points to rocks and trees
     int hpBase = 10;
     addSeeds(TileType.rock, 2, 15, hpBase);
-    createClumps(TileType.rock, 2, 4, hpBase);    
+    createClumps(TileType.rock, 2, 4, hpBase);
 
     // trees
     hpBase = 5;
     addSeeds(TileType.tree, 3, 100, hpBase);
-    createClumps(TileType.tree, 3, 3, hpBase);  
+    createClumps(TileType.tree, 3, 3, hpBase);
 }
 
 
@@ -158,18 +162,18 @@ void generateMap()
 // params: tiletype, bitmap index, iterations, tile's hp
 void createClumps(TileType t, int bI, int i, int hpBaseVal)
 {
-    
+ 
     Tile[][] buffer = copy2DArray(worldMap);
     int left, top, right, bottom;
     float randVal = 0.6;
-    
+ 
     foreach(its; 0..i)
     {
         foreach(y; 0..MapSize)
         {
             foreach(x; 0..MapSize)
             {
-               
+
                if(worldMap[y][x].tileType == t)
                {
                    // surrounding tile may become same type
