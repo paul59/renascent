@@ -73,7 +73,7 @@ void renderMobs(Entity e, Entity p)
     
     al_set_target_bitmap(al_get_backbuffer(display));
     
-    if( abs(e.locX - e.locX) <= 10 && abs(e.locY - e.locY) <= 10)
+    if( abs(e.locX - p.locX) <= 10 && abs(e.locY - p.locY) <= 10)
     {
 
         int dX = e.locX - p.locX;
@@ -101,20 +101,14 @@ void renderHUD(Entity e)
     
     
     
-    string output = "Entity: " ~ e.entity.name;
+    string output = "Entity Type: " ~ to!string(e.creatureType);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY, ALLEGRO_ALIGN_LEFT, output.toStringz);
         
     output = "Soul Points: " ~ to!string(e.sp);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+16, ALLEGRO_ALIGN_LEFT, output.toStringz);	
     
-    output = "Life Points: " ~ to!string(e.entity.basehp);
+    output = "Life Points: " ~ to!string(e.hp);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+32, ALLEGRO_ALIGN_LEFT, output.toStringz);
-
-    output = "ATT: " ~ to!string(e.att);
-    al_draw_text(messageFont, colorWhite, StatsX, StatsY+48, ALLEGRO_ALIGN_LEFT, output.toStringz);
-    
-    output = "DEF: " ~ to!string(e.hp);
-    al_draw_text(messageFont, colorWhite, StatsX, StatsY+64, ALLEGRO_ALIGN_LEFT, output.toStringz);
 
  
     // show info about tile under mouse cursor
