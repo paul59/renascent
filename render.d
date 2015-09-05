@@ -18,6 +18,7 @@ import allegro5.allegro_color;
 import globals;
 import main;
 import entity : Entity;
+import message : messageLines, MessageColor;
 
 
 
@@ -154,10 +155,45 @@ void renderMessages()
     enum MsgBoxX = 680;
     enum MsgBoxY = 400;
     
-    ALLEGRO_COLOR colorYellow = al_map_rgb(255,255,0);
-    foreach(y, output; messageLines)
+    ALLEGRO_COLOR outputColor;
+    
+    
+    foreach(y, messStruct; messageLines)
     {
-        al_draw_text(messageFont, colorYellow, MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, output.toStringz);
+        
+        //get color from struct
+        switch(messStruct.color)
+        {
+            
+            case MessageColor.white:
+            outputColor = al_map_rgb(255, 255, 255);
+            break;
+            
+            case MessageColor.red:
+            outputColor = al_map_rgb(255, 0, 0);
+            break; 
+           
+            case MessageColor.green:
+            outputColor = al_map_rgb(0, 255, 0);
+            break;
+            
+            case MessageColor.yellow:
+            outputColor = al_map_rgb(255, 255, 0);            
+            break;                       
+            
+            default:
+            
+        }
+               
+        int msgPixelWidth = al_get_text_width(messageFont, messStruct.message.toStringz);
+              
+        if(msgPixelWidth < 300)
+        {
+            al_draw_text(messageFont, outputColor, MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, messStruct.message.toStringz);
+        } else
+        {
+            al_draw_text(messageFont, outputColor, MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, "Temporarary line fail lol");
+        }
         
     }
     

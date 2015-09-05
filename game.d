@@ -3,10 +3,11 @@ import std.stdio : writeln;
 import std.random : uniform;
 import std.conv;
 
-// allegro imglobals!"ports
+// allegro imports
 import allegro5.allegro;
 import allegro5.allegro_ttf;
 import allegro5.allegro_font;
+
 
 // app imports
 import globals;
@@ -16,6 +17,7 @@ import render;
 import input;
 import dungeon;
 import entity : Entity, Creatures;
+import message : addMessage, MessageColor;
 
 
 
@@ -73,18 +75,18 @@ void newGame()
 
 
    
-    addMessage("Renascent...");
-    addMessage("Arrows: Move");
-    addMessage("NumPad Arrows: Face");
-    addMessage("NumPad 0: Action");
-    addMessage("");
-    addMessage("When you have sufficient soul points you can");
-    addMessage("transform yourself into any previous form at will");
-    addMessage("");
-    addMessage("If you could find a compass, you could work out your");
-    addMessage("position... handy for quests");
-    addMessage("");
-    addMessage("LOOK OUT out for the giant red butterfly!");
+    addMessage(MessageColor.green,  "Renascent...");
+    addMessage(MessageColor.white,  "Arrows: Move");
+    addMessage(MessageColor.white,  "NumPad Arrows: Face");
+    addMessage(MessageColor.white,  "NumPad 0: Action");
+    addMessage(MessageColor.white,  "");
+    addMessage(MessageColor.white,  "When you have sufficient soul points you can");
+    addMessage(MessageColor.white,  "transform yourself into any previous form at will");
+    addMessage(MessageColor.white,  "");
+    addMessage(MessageColor.green,  "If you could find a compass, you could work out your");
+    addMessage(MessageColor.green,  "position... handy for quests");
+    addMessage(MessageColor.white,  "");
+    addMessage(MessageColor.red,    "LOOK OUT out for the giant red butterfly!");
 
     
     // MAIN LOOP
@@ -218,7 +220,7 @@ bool loadResources()
     if(imgPlayer == null) return false;
     imgMob = al_load_bitmap("./resources/mob.png");
     if(imgMob == null) return false;    
-    messageFont = al_load_ttf_font("./resources/msgfont.ttf",12, 0 );
+    messageFont = al_load_bitmap_font("./resources/a4_font.tga");
     if(messageFont == null) return false;
     
     return true;
@@ -227,19 +229,6 @@ bool loadResources()
 }
 
 
-void addMessage(string mess)
-{
-    
-    // scroll existing messages up
-    foreach(i; 1..MessageBuffer)
-    {
-        messageLines[i-1] = messageLines[i];
-    }
-    
-    // add new message to end of list
-    messageLines[MessageBuffer - 1] = mess;
-    
-}
 
 
 
@@ -278,11 +267,11 @@ void processAction(Entity e)
         
             
         case TileType.water :
-            addMessage("Gulp, slurp... you feel refreshed");
+            addMessage(MessageColor.green, "Gulp, slurp... you feel refreshed");
             break;
         
         default: 
-            addMessage("?");
+            addMessage(MessageColor.red, "wtf?");
             break;          
         
     }
