@@ -21,7 +21,7 @@ Tile[][] worldMap = new Tile[][](100,100);
 
 
 bool[string] keyList;
-string[MessageBuffer] messageLines;
+
 int mouseX, mouseY;
 bool flagMouseOverMap;
 
@@ -36,7 +36,7 @@ enum Direction {north, east, south, west};
 enum TileType {water, grass, rock, tree};
 
 
-enum MessageBuffer = 20;
+
 
 
 
