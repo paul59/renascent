@@ -72,7 +72,7 @@ void renderPlayer(Entity e)
 void renderMobs(Entity e, Entity p)
 {
     
-    al_set_target_bitmap(al_get_backbuffer(display));
+    // FIXME: this method won't work when near the edges of the map!!
     
     if( abs(e.locX - p.locX) <= 10 && abs(e.locY - p.locY) <= 10)
     {
@@ -152,8 +152,6 @@ void renderHUD(Entity e)
 
 void renderMessages()
 {
-    enum MsgBoxX = 680;
-    enum MsgBoxY = 400;
     
     ALLEGRO_COLOR outputColor;
     
@@ -184,17 +182,9 @@ void renderMessages()
             default:
             
         }
-               
-        int msgPixelWidth = al_get_text_width(messageFont, messStruct.message.toStringz);
-              
-        if(msgPixelWidth < 300)
-        {
-            al_draw_text(messageFont, outputColor, MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, messStruct.message.toStringz);
-        } else
-        {
-            al_draw_text(messageFont, outputColor, MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, "Temporarary line fail lol");
-        }
-        
+                
+       al_draw_text(messageFont, outputColor, MsgBoxX, MsgBoxY + y * 16, ALLEGRO_ALIGN_LEFT, messStruct.message.toStringz);
+       
     }
     
 }

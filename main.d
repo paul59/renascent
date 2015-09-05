@@ -6,7 +6,7 @@ pragma(lib, "allegro");
 pragma(lib, "allegro_primitives");
 pragma(lib, "allegro_image");
 pragma(lib, "allegro_font");
-pragma(lib, "allegro_ttf");
+//pragma(lib, "allegro_ttf");
 pragma(lib, "allegro_color");
 
 // D imports
@@ -17,7 +17,7 @@ import allegro5.allegro;
 import allegro5.allegro_primitives;
 import allegro5.allegro_image;
 import allegro5.allegro_font;
-import allegro5.allegro_ttf;
+//import allegro5.allegro_ttf;
 import allegro5.allegro_color;
 
 // app imports
@@ -46,7 +46,7 @@ int main()
         al_install_mouse();
         al_init_image_addon();
         al_init_font_addon();
-        al_init_ttf_addon();
+        //al_init_ttf_addon();
         al_init_primitives_addon();
         al_register_event_source(queue, al_get_display_event_source(display));
         al_register_event_source(queue, al_get_keyboard_event_source());

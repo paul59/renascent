@@ -1,5 +1,4 @@
 
-
 struct Tile
 {
 
@@ -17,7 +16,8 @@ struct Tile
 
 Tile[][] worldMap = new Tile[][](100,100);
 
-
+import entity: Entity;
+Entity[numMobs] mobs;
 
 
 bool[string] keyList;
@@ -26,24 +26,22 @@ int mouseX, mouseY;
 bool flagMouseOverMap;
 
 
+import std.datetime : StopWatch;
+StopWatch gameTimer;
+
+
+
+
 // app enums
 enum TileSize = 32;
 enum MapSize = 100;
 
 
-
 enum Direction {north, east, south, west};
 enum TileType {water, grass, rock, tree};
 
+enum MsgBoxX = 680;
+enum MsgBoxY = 200;
+enum MsgBoxWidth = 280;
 
-
-
-
-
-
-
-
-
-
-
-
+enum numMobs = 50;

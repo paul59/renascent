@@ -64,14 +64,17 @@ void newGame()
  
  
     Entity player;
-    Entity mob;
+  
  
 
     // init player
     player = Entity(Creatures.human);
     
     // generateNPCs();
-    mob = Entity(Creatures.butterfly);
+    foreach(i; 0..numMobs)
+    {  
+         mobs[i] = Entity(Creatures.butterfly);    
+    }
 
 
    
@@ -79,14 +82,11 @@ void newGame()
     addMessage(MessageColor.white,  "Arrows: Move");
     addMessage(MessageColor.white,  "NumPad Arrows: Face");
     addMessage(MessageColor.white,  "NumPad 0: Action");
-    addMessage(MessageColor.white,  "");
-    addMessage(MessageColor.white,  "When you have sufficient soul points you can");
-    addMessage(MessageColor.white,  "transform yourself into any previous form at will");
-    addMessage(MessageColor.white,  "");
-    addMessage(MessageColor.green,  "If you could find a compass, you could work out your");
-    addMessage(MessageColor.green,  "position... handy for quests");
-    addMessage(MessageColor.white,  "");
+    addMessage(MessageColor.white,  "When you have sufficient soul points you can transform yourself into any previous form at will");
+    addMessage(MessageColor.green,  "If you could find a compass, you could work out your position... handy for quests");
     addMessage(MessageColor.red,    "LOOK OUT out for the giant red butterfly!");
+    addMessage(MessageColor.white,  "This is a very long message, designed solely for testing purposes so lets
+                                    hope it works properly, otherwise I'll have to re-write the function. Dang!");
 
     
     // MAIN LOOP
@@ -146,7 +146,12 @@ void newGame()
         al_clear_to_color(al_map_rgb(0, 0, 0));
         renderMap(player);
         renderPlayer(player);
-        renderMobs(mob, player);
+        foreach(m; mobs)
+        {           
+            renderMobs(m, player);      
+        }
+       
+        
         renderHUD(player);
         renderCursor();
         renderMessages();
