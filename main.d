@@ -54,17 +54,7 @@ int main()
         al_set_window_title(display, "Renascent");
         debug writeln("... allegro initialised");
 
-        //init the keyboard AA
-        keyList["esc"] = false;
-        keyList["up"] = false;
-        keyList["down"] = false;
-        keyList["left"] = false;
-        keyList["right"] = false;
-        keyList["action"] = false;
-
-
-
-        runGame();
+        mainMenu();
 
         return 0;
 

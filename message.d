@@ -27,10 +27,11 @@ void addMessage(MessageColor color, string mess)
   
     // method for adding a new message:
     // split the output string to words
-    // test add words checking pixel width at each addition
+    // try to add word, check if pixel width exceeds limit
     // if width exceeds limit
     //      add message with string so far
     //      scroll messages up
+    //      add last word to start of new line
     // continue 
  
   

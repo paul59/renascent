@@ -21,16 +21,34 @@ import message : addMessage, MessageColor;
 
 
 
+/*
+ * present the main menu
+ * 
+ */
+ 
 
-
-void runGame()
+void mainMenu()
 {
+   
+   
+    //init the keyboard AA
+    //will need to use in menu so declare here
+    bool[string] keyList;
+    keyList["esc"] = false;
+    keyList["up"] = false;
+    keyList["down"] = false;
+    keyList["left"] = false;
+    keyList["right"] = false;
+    keyList["action"] = false;   
+        
     debug writeln("... main menu");
 
     // stay in menu until new game, load, quit
     // for now just play new
-    newGame();
+    newGame(keyList);
 }
+
+
 
 
 
@@ -38,7 +56,7 @@ void runGame()
  * initialise and play a new game
  *
  **/
-void newGame()
+void newGame(ref bool[string] keyList)
 {
     bool flagPlaying = true;
 
@@ -50,27 +68,18 @@ void newGame()
     }
        
        
-       
-        
     // init map
     generateMap();
     //TileRegion region = TileRegion([null,null],null,SplitType.vertical, Rect(0,100,0,100));
     //worldMap = generateCADungeonLevel(region, copy2DArray(worldMap));
     //worldMap = generateBSPDungeonLevel(region, copy2DArray(worldMap));
-
     //writeln(tileArrayToString(worldMap));
-    
-    flagMouseOverMap = false;
- 
- 
-    Entity player;
-  
- 
-
+     
     // init player
+    Entity player;
     player = Entity(Creatures.human);
     
-    // generateNPCs();
+    // init mobs
     foreach(i; 0..numMobs)
     {  
          mobs[i] = Entity(Creatures.butterfly);    
@@ -95,7 +104,7 @@ void newGame()
     {
 
         // update the assoc array with key states
-        player = updateKeys(player);
+        player = updateKeys(keyList, player);
 
         if(keyList["esc"]) flagPlaying = false;
         
@@ -143,6 +152,7 @@ void newGame()
             keyList["right"] = false;
         }
 
+        // clear screen and render all the bits
         al_clear_to_color(al_map_rgb(0, 0, 0));
         renderMap(player);
         renderPlayer(player);
@@ -150,18 +160,17 @@ void newGame()
         {           
             renderMobs(m, player);      
         }
-       
-        
         renderHUD(player);
-        renderCursor();
         renderMessages();
+        
+        // show
         al_flip_display();
     }
 }
 
 
 
-// these functions return the co-ordinate to the NESW, with wrap if necessary
+// these functions return the co-ordinate to the NES or W, with wrap if necessary
 
 int coordWest(int cX)
 {

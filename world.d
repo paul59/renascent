@@ -14,14 +14,6 @@ import globals;
 
 
 
-
-
-
-
-
-
-
-
                
 
 struct Rect

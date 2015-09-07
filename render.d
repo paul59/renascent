@@ -79,18 +79,22 @@ void renderMobs(Entity e, Entity p)
 
         int dX = e.locX - p.locX;
         int dY = e.locY - p.locY;
-        
+               
         // ignore facing for now
         al_draw_bitmap_region(imgMob, 0, 0, TileSize, TileSize, 10 * TileSize + dX * TileSize, 10 * TileSize + dY * TileSize, 0);      
     
-    }
+    } 
     
 }
 
 
 
 
-
+/*
+ * draw info about the player
+ * draw the mouse cursor and info if over the map view
+ * 
+ */
 
 void renderHUD(Entity e)
 {
@@ -111,12 +115,19 @@ void renderHUD(Entity e)
     output = "Life Points: " ~ to!string(e.hp);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+32, ALLEGRO_ALIGN_LEFT, output.toStringz);
 
- 
-    // show info about tile under mouse cursor
-    string[int] tileNames = [ 0:"Water", 1:"Grass", 2:"Rock", 3:"Tree"];
-    if(flagMouseOverMap)
+    int mouseDrawX = (mouseX / TileSize) * TileSize;
+    int mouseDrawY = (mouseY / TileSize) * TileSize;
+    
+    // only draw 'cursor' and show info if over map 
+    if(mouseX < 21*TileSize && mouseY < 21*TileSize)
     {
+       
+        al_draw_rectangle( mouseDrawX, mouseDrawY, mouseDrawX + TileSize, mouseDrawY + TileSize, al_map_rgb(255,255,255), 1);
         
+        // show info about tile under mouse cursor
+        string[int] tileNames = [ 0:"Water", 1:"Grass", 2:"Rock", 3:"Tree"];
+
+            
         // get screen cell eg 5,5
         
         int mouseScreenCellX = mouseX/TileSize;
@@ -144,10 +155,12 @@ void renderHUD(Entity e)
         }                 
         output = "Terrain: " ~ tileNames[worldMap[wY][wX].tileType];
         al_draw_text(messageFont, colorWhite, StatsX, StatsY+128, ALLEGRO_ALIGN_LEFT, output.toStringz);
-        
-    }
-    
+                 
+    } 
+
 }
+
+
 
 
 void renderMessages()
@@ -190,19 +203,9 @@ void renderMessages()
 }
 
 
-void renderCursor()
-{
+
+
     
-    int mouseDrawX = (mouseX / TileSize) * TileSize;
-    int mouseDrawY = (mouseY / TileSize) * TileSize;
-    
-    // only draw if over map 
-    flagMouseOverMap = false;
-    if(mouseX < 21*TileSize && mouseY < 21*TileSize)
-    {
-        al_draw_rectangle( mouseDrawX, mouseDrawY, mouseDrawX + TileSize, mouseDrawY + TileSize, al_map_rgb(255,255,255), 1);
-        flagMouseOverMap = true;
-    }
-    
-}
+
+
 

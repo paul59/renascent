@@ -14,16 +14,13 @@ struct Tile
 }
 
 
-Tile[][] worldMap = new Tile[][](100,100);
+Tile[][] worldMap = new Tile[][](MapSize, MapSize);
 
 import entity: Entity;
 Entity[numMobs] mobs;
 
 
-bool[string] keyList;
-
 int mouseX, mouseY;
-bool flagMouseOverMap;
 
 
 import std.datetime : StopWatch;
@@ -35,7 +32,6 @@ StopWatch gameTimer;
 // app enums
 enum TileSize = 32;
 enum MapSize = 100;
-
 
 enum Direction {north, east, south, west};
 enum TileType {water, grass, rock, tree};

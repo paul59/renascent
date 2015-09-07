@@ -10,7 +10,7 @@ import main;
 import entity : Entity;
 
 
-Entity updateKeys(Entity e)
+Entity updateKeys(ref bool[string] keyList, Entity e)
 {
     bool retVal = false;
     ALLEGRO_EVENT event;
