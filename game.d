@@ -16,7 +16,7 @@ import world;
 import render;
 import input;
 import dungeon;
-import entity : Entity, Creatures;
+import entity : Entity;
 import message : addMessage, MessageColor;
 
 
@@ -67,7 +67,14 @@ void newGame(ref bool[string] keyList)
         return;
     }
        
-       
+    // init the game timer
+    import std.datetime : StopWatch;
+    StopWatch gameTimer;
+    
+    // init the mouse
+    Mouse mouse;
+    
+    
     // init map
     generateMap();
     //TileRegion region = TileRegion([null,null],null,SplitType.vertical, Rect(0,100,0,100));
@@ -77,12 +84,14 @@ void newGame(ref bool[string] keyList)
      
     // init player
     Entity player;
-    player = Entity(Creatures.human);
+    player = Entity(Creatures.human, gameTimer);
+    
     
     // init mobs
+    
     foreach(i; 0..numMobs)
     {  
-         mobs[i] = Entity(Creatures.butterfly);    
+         mobs[i] = Entity(Creatures.butterfly, gameTimer);    
     }
 
 
@@ -104,7 +113,7 @@ void newGame(ref bool[string] keyList)
     {
 
         // update the assoc array with key states
-        player = updateKeys(keyList, player);
+        player = updateInput(keyList, mouse, player);
 
         if(keyList["esc"]) flagPlaying = false;
         
@@ -160,7 +169,7 @@ void newGame(ref bool[string] keyList)
         {           
             renderMobs(m, player);      
         }
-        renderHUD(player);
+        renderHUD(mouse, player);
         renderMessages();
         
         // show

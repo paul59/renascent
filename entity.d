@@ -1,11 +1,13 @@
 
 import std.random;
-import globals : worldMap, TileType, Direction, MapSize, gameTimer;
+import std.datetime : StopWatch;
+import globals;
 
 
 
 
-enum Creatures {human, butterfly, ogre, fox}
+
+
 
 struct Entity
 {
@@ -19,14 +21,14 @@ struct Entity
     long updateInterval = 2000;     // interval between updates
     long datum;                     // time next update due
     
-    this(int cType)
+    this(int cType, ref StopWatch gTimer)
     {
         
         creatureType = cType;
         facing = Direction.south;
         
         //same update time for all for now
-        datum = gameTimer.peek().msecs + updateInterval; 
+        datum = gTimer.peek().msecs + updateInterval; 
         
         switch(cType)
         {

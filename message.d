@@ -2,13 +2,12 @@
 import allegro5.allegro_font;
 
 import main : messageFont;
+import globals;
 
 
 
 
 
-enum MessageColor {white, red, green, yellow};
-enum MessageBufferSize = 30;
 
 
 struct MessageLine{

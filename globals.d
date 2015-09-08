@@ -14,30 +14,34 @@ struct Tile
 }
 
 
-Tile[][] worldMap = new Tile[][](MapSize, MapSize);
+struct Mouse
+{
+    int x, y;               // position
+}
 
+
+Tile[][] worldMap = new Tile[][](MapSize, MapSize);
 import entity: Entity;
 Entity[numMobs] mobs;
 
 
-int mouseX, mouseY;
-
-
-import std.datetime : StopWatch;
-StopWatch gameTimer;
-
-
-
-
 // app enums
+
+// map and tile related
 enum TileSize = 32;
 enum MapSize = 100;
-
 enum Direction {north, east, south, west};
 enum TileType {water, grass, rock, tree};
 
+// message related
 enum MsgBoxX = 680;
 enum MsgBoxY = 200;
 enum MsgBoxWidth = 280;
+enum MessageColor {white, red, green, yellow};
+enum MessageBufferSize = 30;
 
+// creature related
 enum numMobs = 50;
+enum Creatures {human, butterfly, ogre, fox}
+
+

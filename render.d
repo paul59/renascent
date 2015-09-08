@@ -96,7 +96,7 @@ void renderMobs(Entity e, Entity p)
  * 
  */
 
-void renderHUD(Entity e)
+void renderHUD(ref Mouse mouse, Entity e)
 {
 
     ALLEGRO_COLOR colorWhite = al_map_rgb(255,255,255);
@@ -115,11 +115,11 @@ void renderHUD(Entity e)
     output = "Life Points: " ~ to!string(e.hp);
     al_draw_text(messageFont, colorWhite, StatsX, StatsY+32, ALLEGRO_ALIGN_LEFT, output.toStringz);
 
-    int mouseDrawX = (mouseX / TileSize) * TileSize;
-    int mouseDrawY = (mouseY / TileSize) * TileSize;
+    int mouseDrawX = (mouse.x / TileSize) * TileSize;
+    int mouseDrawY = (mouse.y / TileSize) * TileSize;
     
     // only draw 'cursor' and show info if over map 
-    if(mouseX < 21*TileSize && mouseY < 21*TileSize)
+    if(mouse.x < 21*TileSize && mouse.y < 21*TileSize)
     {
        
         al_draw_rectangle( mouseDrawX, mouseDrawY, mouseDrawX + TileSize, mouseDrawY + TileSize, al_map_rgb(255,255,255), 1);
@@ -130,8 +130,8 @@ void renderHUD(Entity e)
             
         // get screen cell eg 5,5
         
-        int mouseScreenCellX = mouseX/TileSize;
-        int mouseScreenCellY = mouseY/TileSize;
+        int mouseScreenCellX = mouse.x/TileSize;
+        int mouseScreenCellY = mouse.y/TileSize;
         
         // convert to world co-ords, wrap if required
         int wX = e.locX + (mouseScreenCellX - 10);

@@ -10,7 +10,7 @@ import main;
 import entity : Entity;
 
 
-Entity updateKeys(ref bool[string] keyList, Entity e)
+Entity updateInput(ref bool[string] keyList, ref Mouse mouse, Entity e)
 {
     bool retVal = false;
     ALLEGRO_EVENT event;
@@ -105,8 +105,8 @@ Entity updateKeys(ref bool[string] keyList, Entity e)
         if(event.type == ALLEGRO_EVENT_MOUSE_AXES || event.type == ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY)
         {       
        
-            mouseX = event.mouse.x;
-            mouseY = event.mouse.y;
+            mouse.x = event.mouse.x;
+            mouse.y = event.mouse.y;
 
         }
 
